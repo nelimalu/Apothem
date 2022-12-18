@@ -1,0 +1,142 @@
+:root {
+  --navbar: white;
+  --navbar-text: black;
+  --background: white;
+  --contrast: orange;
+  --main-text: #735cdd;
+  --text: black;
+  --item-background: #f5f7f6;
+}
+
+@font-face {
+	font-family: D_DIN;
+	src: url('../assets/fonts/D_DIN.ttf') format("truetype");
+	font-weight: normal;
+	font-style: normal;
+}
+
+@media (min-width: 768px) {
+	.animate {
+		animation-duration: 0.3s;
+		-webkit-animation-duration: 0.3s;
+		animation-fill-mode: both;
+		-webkit-animation-fill-mode: both;
+	}
+}
+
+@keyframes slideIn {
+	0% {
+		transform: translateY(1rem);
+		opacity: 0;
+	}
+
+	100% {
+		transform: translateY(0rem);
+		opacity: 1;
+	}
+
+	0% {
+		transform: translateY(1rem);
+		opacity: 0;
+	}
+}
+
+@-webkit-keyframes slideIn {
+	0% {
+		-webkit-transform: transform;
+		-webkit-opacity: 0;
+	}
+
+	100% {
+		-webkit-transform: translateY(0);
+		-webkit-opacity: 1;
+	}
+
+	0% {
+		-webkit-transform: translateY(1rem);
+		-webkit-opacity: 0;
+	}
+}
+
+.slideIn {
+	-webkit-animation-name: slideIn;
+	animation-name: slideIn;
+}
+
+.bg-white {
+	background-color: white;
+}
+
+
+* {
+	font-family: D-DIN;
+}
+
+
+.navbar-brand {
+	padding: 0;
+}
+
+.navbar {
+	background-color: var(--navbar);
+	display: flex;
+    align-items: center;
+    letter-spacing: 1px;
+}
+
+#brand-name {
+	color: var(--navbar-text);
+	text-decoration: none;
+}
+
+.navbar-brand {
+	color: var(--navbar-text);
+	font-size: 200%;
+}
+
+.navbar-brand:hover {
+	color: var(--navbar-text);
+}
+
+.nav-button {
+	display: inline-block;
+	position: relative;
+	color: var(--navbar-text);
+	text-decoration: none;
+	font-size: 125%;
+	vertical-align: middle;
+	padding-top: 0.2%;
+}
+
+.nav-button:hover {
+	color: var(--navbar-text);
+}
+
+.nav-button:after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	transform: scaleX(0);
+	height: 2px;
+	bottom: 0;
+	left: 0;
+	background-color: var(--navbar-text);
+	transform-origin: bottom right;
+	transition: transform 0.25s ease-out;
+}
+
+.nav-button:hover:after {
+	transform: scaleX(1);
+	transform-origin: bottom left;
+}
+
+.container-fluid {
+	margin-right: 2.5%;
+	margin-left: 2.5%;
+}
+
+.nav-button-container {
+	margin-left: 2.5%;
+	margin-right: 2.5%;
+	margin-top: 1%;
+}
