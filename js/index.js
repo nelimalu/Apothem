@@ -1,3 +1,12 @@
+var canvas = document.getElementsId("main-background");
+canvas.width = document.innerWidth;
+canvas.height = document.innerHeight;
+var c = canvas.getContext("2d");
+
+ctx.fillStyle = "#000000";
+ctx.fillRect(0, 0, canvas.width,canvas.height);
+
+
 var interval = window.setInterval(siteLoop, 1);
 
 function TxtType(element, toRotate, period) {
