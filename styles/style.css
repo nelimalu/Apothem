@@ -164,6 +164,7 @@
 
 * {
 	font-family: D_DINCondensed;
+
 }
 
 
@@ -275,4 +276,13 @@
 	display: flex;
 	align-items: center;
 	width: 100%;
+}
+
+#main-background {
+  position: absolute;
+  /*z-index: 1;*/
+}
+
+body {
+	overflow-x: hidden;
 }
