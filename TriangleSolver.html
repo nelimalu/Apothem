@@ -80,12 +80,12 @@
 								angleC2 = 180 - angleC;
 								angleB2 = 180 - angleA2 - angleC2;
 								sideB2 = sideA2 * Math.sin((angleB2 * Math.PI / 180.0) / Math.sin(angleA2 * Math.PI / 180.0));
-								else{
+    						}
+    						else{
 									angleC = Math.asin((sideC*Math.sin(angleA * Math.PI / 180.0)) / sideA * 180.0 / Math.PI);
 									angleB = 180 - angleA - angleC;
 									sideB = sideA * Math.sin((angleB * Math.PI / 180.0) / Math.sin(angleA * Math.PI / 180.0));
-								}
-    						}
+							}
 	        			}
 	        			else{ //Side C is missing (A and B are given)
 	        				if(sideA<sideB && angleA<=90){ //Triangle has 2 solutions
@@ -96,12 +96,12 @@
 								angleB2 = 180 - angleB;
 								angleC2 = 180 - angleA2 - angleB2;
 								sideC2 = sideA2 * Math.sin((angleC2 * Math.PI / 180.0) / Math.sin(angleA2 * Math.PI / 180.0));
-								else{
+    						}
+    						else{
 									angleB = Math.asin((sideC*Math.sin(angleA * Math.PI / 180.0)) / sideA * 180.0 / Math.PI);
 									angleC = 180 - angleA - angleB;
 									sideC = sideA * Math.sin((angleC * Math.PI / 180.0) / Math.sin(angleA * Math.PI / 180.0));
-								}
-    						}
+							}	
 	        			}
 		        	}
 		        	else if(boolAngleB){ //Angle B is the angle given
@@ -121,12 +121,12 @@
 								angleC2 = 180 - angleC;
 								angleA2 = 180 - angleB2 - angleC2;
 								sideA2 = sideB2 * Math.sin((angleA2 * Math.PI / 180.0) / Math.sin(angleB2 * Math.PI / 180.0));
-								else{
+    						}
+    						else{
 									angleC = Math.asin((sideC*Math.sin(angleB * Math.PI / 180.0)) / sideB * 180.0 / Math.PI);
 									angleA = 180 - angleB - angleC;
 									sideA = sideB * Math.sin((angleA * Math.PI / 180.0) / Math.sin(angleB * Math.PI / 180.0));
-								}
-    						}
+							}
 	        			}
 	        			else{ //Side C is missing (Side A and B are given)
 	        				if(sideB<sideA && angleB<=90){ //Triangle has 2 solutions
@@ -136,13 +136,13 @@
 								sideC = sideB * Math.sin((angleC * Math.PI / 180.0) / Math.sin(angleB * Math.PI / 180.0));
 								angleA2 = 180 - angleA;
 								angleC2 = 180 - angleB2 - angleA2;
-								sideC2 = sideB2 * Math.sin((angleC2 * Math.PI / 180.0) / Math.sin(angleB2 * Math.PI / 180.0));
-								else{
+								sideC2 = sideB2 * Math.sin((angleC2 * Math.PI / 180.0) / Math.sin(angleB2 * Math.PI / 180.0));	
+    						}
+    						else{
 									angleA = Math.asin((sideA*Math.sin(angleB * Math.PI / 180.0)) / sideB * 180.0 / Math.PI);
 									angleC = 180 - angleB - angleA;
 									sideC = sideB * Math.sin((angleC * Math.PI / 180.0) / Math.sin(angleB * Math.PI / 180.0));
-								}
-    						}
+							}
 	        			}
 		        	}
 		        	else {
@@ -162,12 +162,12 @@
 								angleB2 = 180 - angleB2;
 								angleA2 = 180 - angleB2 - angleC2;
 								sideA2 = sideC2 * Math.sin((angleA2 * Math.PI / 180.0) / Math.sin(angleC2 * Math.PI / 180.0));
-								else{
+    						}
+    						else{
 									angleC = Math.asin((sideC*Math.sin(angleB * Math.PI / 180.0)) / sideB * 180.0 / Math.PI);
 									angleA = 180 - angleB - angleC;
 									sideA = sideB * Math.sin((angleA * Math.PI / 180.0) / Math.sin(angleB * Math.PI / 180.0));
-								}
-    						}
+							}
 	        			}
 	        			else{ //Side B is missing (A and C are given)
 	        				if(sideC<sideA && angleC<=90){ //Triangle has 2 solutions
@@ -178,12 +178,12 @@
 								angleA2 = 180 - angleA;
 								angleB2 = 180 - angleA2 - angleC2;
 								sideB2 = sideC2 * Math.sin((angleB2 * Math.PI / 180.0) / Math.sin(angleC2 * Math.PI / 180.0));
-								else{
+    						}
+							else{
 									angleA = Math.asin((sideA*Math.sin(angleC * Math.PI / 180.0)) / sideC * 180.0 / Math.PI);
 									angleB = 180 - angleA - angleC;
 									sideB = sideC * Math.sin((angleB * Math.PI / 180.0) / Math.sin(angleC * Math.PI / 180.0));
-								}
-    						}
+							}
 	        			}
 	        		}
 		        }
