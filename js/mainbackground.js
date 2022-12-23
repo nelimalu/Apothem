@@ -6,7 +6,11 @@ var c = canvas.getContext("2d");
 var gradient = c.createLinearGradient(0, 0, window.innerWidth, 0);
 gradient.addColorStop(0, "#f0f0f0");
 gradient.addColorStop(0.5, "#f0f0f0");
-gradient.addColorStop(1, "rgba(255,255,255,0)");  // 
+gradient.addColorStop(1, "rgba(255,255,255,0)");
+
+var background_gradient = c.createLinearGradient(0, window.innerHeight, 0, window.innerHeight);
+gradient.addColorStop(0, "#f0f0f0");
+gradient.addColorStop(1, "rgba(255,255,255,0)");
 
 
 function randint(min, max) {
@@ -92,8 +96,7 @@ function animate() {
     window.requestAnimationFrame(animate);
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
-
-    c.fillStyle = "#f0f0f0";
+    c.fillStyle = background_gradient;
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let orb of orbs) {

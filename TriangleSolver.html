@@ -13,6 +13,9 @@
 			width: 150px;
 			height: 60px;
 		}
+		z{
+			margin-left: 10px;
+		}
 	</style>
 	<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,16 +46,16 @@
 	    <div class="collapse navbar-collapse" id="navbarNav">
 	      	<ul class="navbar-nav me-auto mb-2 mb-lg-0">
 		        <li class="nav-button-container">
-		          <a class="nav-button active-button" aria-current="page" href='index.html'>PHOTO</a>
+		          <a class="nav-button active-button" aria-current="page" href='PhotoSolver.html'>PHOTO</a>
 		        </li>
 		        <li class="nav-button-container">
-					<a class="nav-button" href='#'>LESSONS</a>
+					<a class="nav-button" href='Lessons.html'>LESSONS</a>
 				</li>
 				<li class="nav-button-container">
-					<a class="nav-button" href='#'>GRAPHING</a>
+					<a class="nav-button" href='Graphing.html'>GRAPHING</a>
 				</li>
 				<li class="nav-button-container">
-					<a class="nav-button" href='#'>CALCULATORS</a>
+					<a class="nav-button" href='Calculator.html'>CALCULATORS</a>
 				</li>
 		        <li class="nav-button-container">
 		          <a class="nav-button" href='TriangleSolver.html'>TRIGONOMETRY</a>
@@ -87,9 +90,48 @@
 		<button class="triangleSolve" onclick= "solve()">Solve</button>
 		<button class="triangleClear" onclick= "clear()">Clear</button>
 	</div>
-
+	<br>
 	<div>
-		
+		<z>Angles</z>
+		<z>Sides</z>
+		<z>Medians</z>
+		<z>Angle Bisectors</z> 
+		<br>
+		<z>Side a:</z>
+		<input class="sideAnswers" type="text" id="sideAAnswer" style="margin-left: 13px;margin-right: 15px;" readonly> 
+		<z>Angle A:</z>
+		<input class="angleAnswers" type="text" id="angleAAnswer" style="margin-left: 4px; margin-right: 15px;" readonly> 	
+		<z>Median of a:</z>
+		<input class="medianAnswers" type="text" id="medianAAnswer" style="margin-left: 4px;margin-right: 15px;" readonly>
+		<z>Angle Bisector of A:</z> 
+		<input class="bisecAnswers" type="text" id="bisectorAAnswer" style="margin-left: 4px;margin-right: 15px;" readonly>
+		<br>
+		<z>Side b:</z>
+		<input class="sideAnswers" type="text" id="sideBAnswer" style="margin-left: 13px;margin-right: 15px;" readonly> 
+		<z>Angle B:</z>
+		<input class="angleAnswers" type="text" id="angleBAnswer" style="margin-left: 4px;margin-right: 15px;" readonly> 	
+		<z>Median of b:</z>
+		<input class="medianAnswers" type="text" id="medianBAnswer" style="margin-left: 4px;margin-right: 15px;" readonly>
+		<z>Angle Bisector of B:</z> 
+		<input class="bisecAnswers" type="text" id="bisectorBAnswer" style="margin-left: 4px;margin-right: 15px;" readonly>
+		<br>
+		<z>Side c:</z>
+		<input class="sideAnswers" type="text" id="sideCAnswer" style="margin-left: 13px;margin-right: 15px;" readonly> 
+		<z>Angle C:</z>
+		<input class="angleAnswers" type="text" id="angleCAnswer" style="margin-left: 4px;margin-right: 15px;" readonly> 	
+		<z>Median of c:</z>
+		<input class="medianAnswers" type="text" id="medianCAnswer" style="margin-left: 4px;margin-right: 15px;" readonly>
+		<z>Angle Bisector of C:</z> 
+		<input class="bisecAnswers" type="text" id="bisectorCAnswer" style="margin-left: 4px;margin-right: 15px;" readonly>
+		<br>
+		<br>
+		<z>Area</z>
+		<input class="areaAnswers" type="text" id="areaAnswer" style="margin-left: 13px;margin-right: 15px;" readonly> 
+		<br>
+		<z>Perimeter</z>
+		<input class="perimAnswers" type="text" id="perimAnswer" style="margin-left: 13px;margin-right: 15px;" readonly> 
+		<button class="moreDigit" onclick= "addDigit()">Add a Digit</button>
+		<button class="lessDigit" onclick= "removeDigit()">Remove a Digit</button>
 	</div>
 </body>
 </html>

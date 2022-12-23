@@ -242,6 +242,7 @@
 	margin: 5%;
 	margin-top: 3%;
 	padding: 0;
+	margin-bottom: 20%;
 }
 
 .cta-container {
@@ -291,7 +292,29 @@ t {
 	margin-left: 10px;
 }
 
+<<<<<<< HEAD
 z{
 	font-size: 200%;
 	margin-right: 10px;
 }
+=======
+.discover-container {
+	margin-top: 2%;
+}
+
+.discover-button {
+	padding: 1%;
+	color: var(--contrast);
+	font-size: 150%;
+	background-color: none;
+	border: solid 2px var(--contrast);
+	text-decoration: none;
+	transition: .3s;
+}
+
+.discover-button:hover {
+	color: black;
+	background-color: var(--contrast);
+}
+
+>>>>>>> 7ba8cdccfecd2a7f745ff92781b66e25ac69dfae
