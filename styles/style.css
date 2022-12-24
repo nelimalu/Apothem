@@ -284,15 +284,13 @@
   /*z-index: 1;*/
 }
 
-body {
+body{
 	overflow-x: hidden;
 }
 
 t {
 	margin-left: 10px;
 }
-
-<<<<<<< HEAD
 z{
 	font-size: 200%;
 	margin-right: 10px;
