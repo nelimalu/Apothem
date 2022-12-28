@@ -1,3 +1,93 @@
+var drawingSideA = 0.0;
+var drawingSideB = 0.0;
+var drawingSideC = 0.0;
+var drawingAngleA = 0.0;
+var drawingAngleB = 0.0;
+var drawingAngleC = 0.0;
+let myCanvas = document.getElementById("canvasId");
+let myContext = myCanvas.getContext("2d");
+function drawTriangle(ctx, canvas){
+	//600,190, max 350 
+	let maxLength = 300;
+	let largestLength = Math.max(drawingSideA, drawingSideB, drawingSideC);
+	let multBy = (maxLength + 0.0)/largestLength;
+	drawingSideA *= multBy;
+	drawingSideB *= multBy;
+	drawingSideC *= multBy;
+	let smallestLength = Math.min(drawingSideA, drawingSideB, drawingSideC);
+	largestLength *= multBy;
+	let startX = 150 + (largestLength/2.0); 
+	let startY = 250; 
+	if(smallestLength == drawingSideA){
+		ctx.strokeStyle = "black";
+		ctx.beginPath();
+		ctx.moveTo(startX, startY);
+		startX -= drawingSideA;
+		ctx.lineTo(startX, startY);
+		ctx.translate(startX, startY);
+		if(drawingAngleC > 90){
+			ctx.rotate((360 - (drawingAngleC - 90)) * Math.PI / 180);
+			ctx.lineTo(0, - drawingSideB);
+			ctx.rotate((360 - (drawingAngleC - 90)) * Math.PI / 180 * -1);
+		}
+		else if(drawingAngleC < 90){
+			ctx.rotate((90- drawingAngleC) * Math.PI / 180);
+			ctx.lineTo(0, - drawingSideB);
+			ctx.rotate((90-drawingAngleC) * Math.PI / 180 * -1);
+		}
+		else{
+			ctx.lineTo(0, -drawingSideB);
+		}	
+		ctx.closePath();
+		ctx.stroke();
+	}
+	else if(smallestLength == drawingSideB){
+		ctx.strokeStyle = "black";
+		ctx.beginPath();
+		ctx.moveTo(startX, startY);
+		startX -= drawingSideB;
+		ctx.lineTo(startX, startY);
+		ctx.translate(startX, startY);
+		if(drawingAngleC > 90){
+			ctx.rotate((360 - (drawingAngleC - 90)) * Math.PI / 180);
+			ctx.lineTo(0, -drawingSideA);
+			ctx.rotate((360 - (drawingAngleC - 90)) * Math.PI / 180 * -1);
+		}
+		else if(drawingAngleC < 90){
+			ctx.rotate((90-drawingAngleC) * Math.PI / 180);
+			ctx.lineTo(0, -drawingSideA);
+			ctx.rotate((90-drawingAngleC) * Math.PI / 180 * -1);
+		}
+		else{
+			ctx.lineTo(0, - drawingSideA);
+		}	
+		ctx.closePath();
+		ctx.stroke();
+	}
+	else{ 
+		ctx.strokeStyle = "black";
+		ctx.beginPath();
+		ctx.moveTo(startX, startY);
+		startX -= drawingSideC;
+		ctx.lineTo(startX, startY);
+		ctx.translate(startX, startY);
+		if(drawingAngleA > 90){
+			ctx.rotate((360 - (drawingAngleA - 90)) * Math.PI / 180);
+			ctx.lineTo(0, -drawingSideB);
+			ctx.rotate((360 - (drawingAngleA - 90)) * Math.PI / 180 * -1);
+		}
+		else if(drawingAngleC < 90){
+			ctx.rotate((90-drawingAngleA) * Math.PI / 180);
+			ctx.lineTo(0, -drawingSideB);
+			ctx.rotate((90-drawingAngleA) * Math.PI / 180 * -1);
+		}
+		else{
+			ctx.lineTo(0, - drawingSideB);
+		}
+		ctx.closePath();
+		ctx.stroke();
+	}
+}
 //Two solution question doesnt work
 var digitCounter = 0;
 var twoSolutions = false;
@@ -171,9 +261,9 @@ function solve(){
 	    		if(!boolSideC){ //Side C is missing (A and B are given)
 					sideC = Math.sqrt(Math.pow(sideB,2) + Math.pow(sideA,2) - 2 * sideB * sideA * Math.cos(angleC*Math.PI/180.0) );
 					let temp = (Math.pow(sideB, 2) + Math.pow(sideC, 2) - Math.pow(sideA, 2)) / (2.0 * sideB * sideC);
-	        		angleA = Math.acos(temp) * 180.0/Math.PI * 100;
+	        		angleA = Math.acos(temp) * 180.0/Math.PI;
 	        		temp = (Math.pow(sideA, 2) + Math.pow(sideC, 2) - Math.pow(sideB, 2)) / (2.0 * sideA * sideC);
-		            angleB = Math.acos(temp) * 180.0/Math.PI * 100;
+		            angleB = Math.acos(temp) * 180.0/Math.PI;
 				}
 				else if (!boolSideA){ //Side A is missing (B and C are given)
 					if(sideC<sideB && angleC<90){ //Triangle has 2 solutions
@@ -300,6 +390,20 @@ function solve(){
 			if(digitCounter<=0){
 	    		digitCounter = 0;
 	    	}
+	    	drawingSideA = sideA;
+	    	drawingSideB = sideB;
+	    	drawingSideC = sideC;
+	    	drawingAngleA = angleA;
+	 		drawingAngleB = angleB;
+			drawingAngleC = angleC;
+	 	   	if(twoSolutions && !showSolution1){
+	    		drawingSideA = sideA2;
+		    	drawingSideB = sideB2;
+		    	drawingSideC = sideC2;
+		    	drawingAngleA = angleA2;
+	 			drawingAngleB = angleB2;
+				drawingAngleC = angleC2;
+	    	}
 			sideA = Math.round(parseFloat(sideA) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    sideB = Math.round(parseFloat(sideB) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    sideC = Math.round(parseFloat(sideC) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
@@ -313,13 +417,6 @@ function solve(){
 		    angleA2 = Math.round(parseFloat(angleA2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    angleB2 = Math.round(parseFloat(angleB2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    angleC2 = Math.round(parseFloat(angleC2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
-
-		    finalSideA = Math.round(parseFloat(finalSideA) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
-		    finalSideB = Math.round(parseFloat(finalSideB) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
-		    finalSideC = Math.round(parseFloat(finalSideC) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
-		    finalAngleA = Math.round(parseFloat(finalAngleA) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
-		    finalAngleB = Math.round(parseFloat(finalAngleB) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
-		    finalAngleC = Math.round(parseFloat(finalAngleC) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 
 		    perimeter = Math.round(parseFloat(perimeter) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    perimeter2 = Math.round(parseFloat(perimeter2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
@@ -359,24 +456,6 @@ function solve(){
 		    	printOne("bisectorAAnswer",bisectorA);
 		    	printOne("bisectorBAnswer",bisectorB);
 		    	printOne("bisectorCAnswer",bisectorC);
-		    	/*printTwo("sideAAnswer",sideA,sideA2);
-		    	printTwo("sideBAnswer",sideB,sideB2);
-		    	printTwo("sideCAnswer",sideC,sideC2);
-
-		    	printTwo("angleAAnswer",angleA,angleA2);
-		    	printTwo("angleBAnswer",angleB,angleB2);
-		    	printTwo("angleCAnswer",angleC,angleC2);
-
-		    	printTwo("perimAnswer",perimeter,perimeter2);
-		    	printTwo("areaAnswer",area,area2);
-
-		    	printTwo("medianAAnswer",medianA,medianA2);
-		    	printTwo("medianBAnswer",medianB,medianB2);
-		    	printTwo("medianCAnswer",medianC,medianC2);
-
-		    	printTwo("bisectorAAnswer",bisectorA,bisectorA2);
-		    	printTwo("bisectorBAnswer",bisectorB,bisectorB2);
-		    	printTwo("bisectorCAnswer",bisectorC,bisectorC2);*/
 		    }
 		    else{
 		    	printOne("sideAAnswer",sideA2);
@@ -398,6 +477,7 @@ function solve(){
 		    	printOne("bisectorBAnswer",bisectorB2);
 		    	printOne("bisectorCAnswer",bisectorC2);
 		    }
+			drawTriangle(myContext,myCanvas);
 		}
 	}
 }
@@ -466,6 +546,8 @@ function clearField(){
 	digitCounter = 0;
 	twoSolutions = false;
 	showSolution1 = true;
+	myContext.fillStyle = "white";
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
 }
 function addDigit(){
 	digitCounter = parseFloat(digitCounter) + 1;
