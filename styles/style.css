@@ -284,14 +284,13 @@
   /*z-index: 1;*/
 }
 
-body {
+body{
 	overflow-x: hidden;
 }
 
 t {
 	margin-left: 10px;
 }
-
 
 z{
 	font-size: 200%;
