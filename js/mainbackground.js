@@ -94,8 +94,6 @@ function generateBalls() {
 var orbs = generateBalls();
 function animate() {
     window.requestAnimationFrame(animate);
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
     c.fillStyle = background_gradient;
     c.fillRect(0, 0, canvas.width, canvas.height);
 
