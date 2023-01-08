@@ -239,10 +239,9 @@
 
 .intro-container {
 	display: flex;
-	margin: 5%;
-	margin-top: 3%;
-	padding: 0;
-	margin-bottom: 20%;
+	padding: 5%;
+	padding-top: 3%;
+	height: 95vh;
 }
 
 .cta-container {
@@ -280,8 +279,14 @@
 }
 
 #main-background {
-  position: absolute;
-  /*z-index: 1;*/
+	margin: 0;
+	padding: 0;
+	position: fixed;
+	width: 100%; /* calc(100% - 2px)for borders */
+	height: 100%; /* for borders */
+	top:0;
+	left:0;
+	visibility: hidden;
 }
 
 body{
@@ -292,7 +297,7 @@ t {
 	margin-left: 10px;
 }
 
-z{
+z {
 	font-size: 200%;
 	margin-right: 10px;
 }

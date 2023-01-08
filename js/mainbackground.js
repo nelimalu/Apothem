@@ -3,13 +3,9 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
-var gradient = c.createLinearGradient(0, 0, window.innerWidth, 0);
+var gradient = c.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
 gradient.addColorStop(0, "#f0f0f0");
-gradient.addColorStop(0.5, "#f0f0f0");
-gradient.addColorStop(1, "rgba(255,255,255,0)");
-
-var background_gradient = c.createLinearGradient(0, window.innerHeight, 0, window.innerHeight);
-gradient.addColorStop(0, "#f0f0f0");
+gradient.addColorStop(0.5, "#ffffff");
 gradient.addColorStop(1, "rgba(255,255,255,0)");
 
 
@@ -68,7 +64,7 @@ class Ball {
         this.x += this.x_vel;
         this.y += this.y_vel;
 
-        if (0 >= this.x || this.x >= window.innerWidth)
+        if (window.innerWidth / 4 >= this.x || this.x >= window.innerWidth)
             this.x_vel *= -1;
         if (0 >= this.y || this.y >= window.innerHeight)
             this.y_vel *= -1;
@@ -94,7 +90,7 @@ function generateBalls() {
 var orbs = generateBalls();
 function animate() {
     window.requestAnimationFrame(animate);
-    c.fillStyle = background_gradient;
+    c.fillStyle = "#ffffff";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
     for (let orb of orbs) {

@@ -59,3 +59,9 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+
+#graph {
+	position: absolute;
+	top: 0;
+	left: 0;
+}

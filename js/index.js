@@ -44,7 +44,6 @@ function TxtType(element, toRotate, period) {
 
 window.onload = function() {
     var elements = document.getElementsByClassName('typewriter');
-    console.log(elements);
     for (var i = 0; i < elements.length; i++) {
         var toRotate = elements[i].getAttribute('data-type');
         var period = elements[i].getAttribute('data-period');
@@ -104,5 +103,9 @@ function siteLoop() {
             `;
         }
     }
+
+    let intro_element = document.getElementsByClassName("intro-container")[0];
+    let canvas = document.getElementById("main-background");
+	intro_element.style.background = `url(${canvas.toDataURL()})`;
 }
 
