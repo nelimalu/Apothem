@@ -3,13 +3,13 @@
 <head>
 	<style type="text/css">
 		input{
-			width: 150px;
+			width: 20.5%;
 			height: 60px;
 			text-align: left;
 		}
 		button{
 			font-size: 50px;
-			width: 150px;
+			width: 20.5%;
 			height: 60px;
 		}
 		.inputText{
@@ -21,6 +21,21 @@
 		.bigDiv{
 			display: grid;
 			grid-template-columns: 1fr 1fr;
+		}
+		.otherText{
+			margin-left: 1%;
+		}
+		.bottomButtons{
+			margin-left: 2.5%;
+		}
+		.bottomAnswer{
+			margin-bottom: 1%;
+		}
+		.inputField{
+			margin-bottom: 1%;
+		}
+		#answers{
+			visibility: hidden;
 		}
 	</style>
 	<meta charset="UTF-8">
@@ -74,24 +89,28 @@
 	<!-- EVERYTHING ELSE -->
 	<div class="bigDiv">
 		<div>
-			<z class = "inputText">Side a:</z>
-			<input class="sides" type="number" id="sideA">
-			<z class = "inputText">Angle A:</z>
-			<input class="angles" type="number" id="angleA">
-			<br>
-			<z class = "inputText">Side b:</z>
-			<input class="sides" type="number" id="sideB">
-			<z class = "inputText">Angle B:</z>
-			<input class="angles" type="number" id="angleB">
-			<br>
-			<z class = "inputText">Side c:</z>
-			<input class="sides" type="number" id="sideC">
-			<z class = "inputText">Angle C:</z>
-			<input class="angles" type="number" id="angleC">
-			<br>
-			<br>
-			<button class="triangleSolve" onclick= "solve()" style="margin-left: 5%">Solve</button>
-			<button class="triangleClear" onclick= "clearField()" style="margin-left: 5%">Clear</button>
+			<div class="inputField">
+				<z class = "inputText">Side a:</z>
+				<input class="sides" type="number" id="sideA">
+				<z class = "inputText">Angle A:</z>
+				<input class="angles" type="number" id="angleA">
+			</div>
+			<div class="inputField">
+				<z class = "inputText">Side b:</z>
+				<input class="sides" type="number" id="sideB">
+				<z class = "inputText">Angle B:</z>
+				<input class="angles" type="number" id="angleB">
+			</div>
+			<div class="inputField">
+				<z class = "inputText">Side c:</z>
+				<input class="sides" type="number" id="sideC">
+				<z class = "inputText">Angle C:</z>
+				<input class="angles" type="number" id="angleC">
+			</div>
+			<div class="inputField">
+				<button class="buttonSolve" onclick= "solve()" style="margin-left: 16.3%">Solve</button>
+				<button class="buttonSolve" onclick= "clearField()" style="margin-left: 18.5%">Clear</button>
+			</div>
 		</div>
 		<div>
 			<canvas id="canvasId" width="350" height="350" style="border: 2px solid black;"></canvas>
@@ -99,48 +118,64 @@
 	</div>
 	<script src="js/trianglesolver.js"></script>
 	<br>
-	<div>
-		<z class = "outputText">Angles</z>
-		<z>Sides</z>
-		<z>Medians</z>
-		<z>Angle Bisectors</z> 
-		<br>
+	<div id="answers">
+		<div>
+		<z class = "outputText" style= "margin-left: 11%;">Sides</z>
+		<z style = "margin-left: 13%;">Angles</z>
+		<z style = "margin-left: 14.5%;">Medians</z>
+		<z style = "margin-left: 17.5%;">Angle Bisectors</z> 
+		</div>
+
+		<div class="bottomAnswer">
 		<z class = "outputText">Side a:</z>
 		<input class="sideAnswers" type="text" id="sideAAnswer"readonly> 
-		<z>Angle A:</z>
+
+		<z class = "otherText">Angle A:</z>
 		<input class="angleAnswers" type="text" id="angleAAnswer"readonly> 	
-		<z>Median of a:</z>
+		<z class = "otherText">Median of a:</z>
 		<input class="medianAnswers" type="text" id="medianAAnswer"readonly>
-		<z>Angle Bisector of A:</z> 
+		<z class = "otherText">Angle Bisector of A:</z> 
 		<input class="bisecAnswers" type="text" id="bisectorAAnswer"readonly>
-		<br>
+		</div>
+
+		<div class="bottomAnswer">
 		<z class = "outputText">Side b:</z>
 		<input class="sideAnswers" type="text" id="sideBAnswer"readonly> 
-		<z>Angle B:</z>
+
+		<z class = "otherText">Angle B:</z>
 		<input class="angleAnswers" type="text" id="angleBAnswer"readonly> 	
-		<z>Median of b:</z>
+		<z class = "otherText">Median of b:</z>
 		<input class="medianAnswers" type="text" id="medianBAnswer"readonly>
-		<z>Angle Bisector of B:</z> 
+		<z class = "otherText">Angle Bisector of B:</z> 
 		<input class="bisecAnswers" type="text" id="bisectorBAnswer"readonly>
-		<br>
+		</div>
+
+		<div class="bottomAnswer">
 		<z class = "outputText">Side c:</z>
 		<input class="sideAnswers" type="text" id="sideCAnswer"readonly> 
-		<z class = "outputText">Angle C:</z>
+
+		<z class = "otherText">Angle C:</z>
 		<input class="angleAnswers" type="text" id="angleCAnswer"readonly> 	
-		<z>Median of c:</z>
+		<z class = "otherText">Median of c:</z>
 		<input class="medianAnswers" type="text" id="medianCAnswer"readonly>
-		<z>Angle Bisector of C:</z> 
+		<z class = "otherText">Angle Bisector of C:</z> 
 		<input class="bisecAnswers" type="text" id="bisectorCAnswer"readonly>
+		</div>
 		<br>
-		<br>
+
+		<div class="bottomAnswer">
 		<z class = "outputText">Area:</z>
-		<input class="areaAnswers" type="text" id="areaAnswer"readonly> 
-		<br>
+		<input class="areaAnswers" type="text" id="areaAnswer"readonly style="margin-left: 3.9%"> 
+		</div>
+		
+		<div class="bottomAnswer">
 		<z class = "outputText">Perimeter:</z>
 		<input class="perimAnswers" type="text" id="perimAnswer"readonly> 
-		<button class="moreDigit" onclick= "addDigit()">Add a Digit</button>
-		<button class="lessDigit" onclick= "removeDigit()">Remove a Digit</button>
-		<button class="secondSolution" onclick= "secondSolution()">Show Other Solution</button>
+
+		<button class="bottomButtons" onclick= "addDigit()">Add a Digit</button>
+		<button class="bottomButtons" onclick= "removeDigit()">Remove a Digit</button>
+		<button class="bottomButtons" onclick= "secondSolution()">Show Other Solution</button>
+		</div>
 	</div>
 </body>
 </html>

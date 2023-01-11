@@ -61,7 +61,28 @@ input:checked + .slider:before {
 }
 
 #graph {
-	position: absolute;
-	top: 0;
-	left: 0;
+	
+}
+
+.sidebar {
+  width: 200%;
+  padding: 5%;
+  background-color: white;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr;
+}
+
+.white {
+  color: white;
+}
+
+.equations-list {
+  outline: none;
+}
+
+equations-list.li {
+  list-style-type: square;
 }

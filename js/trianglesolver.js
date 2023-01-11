@@ -6,8 +6,11 @@ var drawingAngleB = 0.0;
 var drawingAngleC = 0.0;
 let myCanvas = document.getElementById("canvasId");
 let myContext = myCanvas.getContext("2d");
+myContext.fillStyle = "yellow";
+myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
 function drawTriangle(ctx, canvas){
-	//600,190, max 350 
+	ctx.fillStyle = "white";
+	ctx.fillRect(0,0,canvas.width,canvas.height);
 	let maxLength = 300;
 	let largestLength = Math.max(drawingSideA, drawingSideB, drawingSideC);
 	let multBy = (maxLength + 0.0)/largestLength;
@@ -40,6 +43,7 @@ function drawTriangle(ctx, canvas){
 		}	
 		ctx.closePath();
 		ctx.stroke();
+		ctx.translate(-startX, -startY);
 	}
 	else if(smallestLength == drawingSideB){
 		ctx.strokeStyle = "black";
@@ -63,6 +67,7 @@ function drawTriangle(ctx, canvas){
 		}	
 		ctx.closePath();
 		ctx.stroke();
+		ctx.translate(-startX, -startY);
 	}
 	else{ 
 		ctx.strokeStyle = "black";
@@ -86,6 +91,7 @@ function drawTriangle(ctx, canvas){
 		}
 		ctx.closePath();
 		ctx.stroke();
+		ctx.translate(-startX, -startY);
 	}
 }
 //Two solution question doesnt work
@@ -93,6 +99,7 @@ var digitCounter = 0;
 var twoSolutions = false;
 var showSolution1 = true;
 function solve(){
+	document.getElementById('answers').style.visibility = 'visible';
 	var sideA = document.getElementById('sideA').value;
 	var sideB = document.getElementById('sideB').value;
 	var sideC = document.getElementById('sideC').value;
@@ -208,7 +215,7 @@ function solve(){
 					}
 					else{
 						twoSolutions = false;
-						angleA = Math.asin((sideA*Math.sin(angleB * Math.PI / 180.0)) / sideB) / (Math.PI / 180);
+						angleB = Math.asin((sideB*Math.sin(angleA * Math.PI / 180.0)) / sideA) / (Math.PI / 180);
 						angleC = 180 - angleB - angleA;
 						sideC = sideB * Math.sin(angleC * Math.PI / 180.0) / Math.sin(angleB * Math.PI / 180.0);
 					}
@@ -518,6 +525,9 @@ function printTwo(name, thing1, thing2){
 	document.getElementById(name).value = thing1 + " OR " + thing2;
 }
 function clearField(){
+	myContext.fillStyle = "yellow";
+	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
+	document.getElementById('answers').style.visibility = 'hidden';
 	if(document.getElementById('sideA').value != "") document.getElementById('sideA').value = "";
 	if(document.getElementById('sideB').value != "") document.getElementById('sideB').value = "";
 	if(document.getElementById('sideC').value != "") document.getElementById('sideC').value = "";
@@ -546,8 +556,6 @@ function clearField(){
 	digitCounter = 0;
 	twoSolutions = false;
 	showSolution1 = true;
-	myContext.fillStyle = "white";
-	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
 }
 function addDigit(){
 	digitCounter = parseFloat(digitCounter) + 1;
