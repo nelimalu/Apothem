@@ -155,7 +155,7 @@ var graph = new Graph();
 function animate() {
     window.requestAnimationFrame(animate);
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight - document.getElementById("navbar").clientHeight;
 
     graph.update();
 }

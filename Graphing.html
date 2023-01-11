@@ -21,7 +21,7 @@
 	<body>
 		<!-- NAVBAR -->
 		
-		<nav class="navbar navbar-expand-lg navbar-light custom-colour">
+		<nav id="navbar" class="navbar navbar-expand-lg navbar-light custom-colour">
 		  <div class="container-fluid">
 		    <span class="navbar-brand" href='/'>
 		    	<img id="logo" src="assets/images/logo.ico" alt="logo" height="40">
@@ -55,25 +55,23 @@
 
 		<div class="main-content">
 			<div class="sidebar">
-				<h1>Equations</h1>
+				<div>
+					<h1>Equations</h1>
 
-				<span>2D</span>
-				<label class="switch">
-					<input type="checkbox">
-					<span class="slider round"></span>
-				</label>
-				<span>3D</span>
-
-				
-				<ol class="equations-list" contenteditable="true">
-					<li>asdfasdf</li>
-					<li>asdfasdf</li>
-					<li>asdfasdf</li>
-					<li>asdfasdf</li>
-					<li>asdfasdf</li>
-				</ol>
+					<ol class="equations-list" contenteditable="true">
+						<li>asdfasdf</li>
+					</ol>
+				</div>
+				<div class="slider-box">
+					<span>2D</span>
+					<label class="switch">
+						<input type="checkbox">
+						<span class="slider round"></span>
+					</label>
+					<span>3D</span>
+				</div>
 			</div>
-			<div class="white">Luka&Pouya</div>
+			<!--<div class="white">Luka&Pouya</div>-->
 			<canvas id="graph"></canvas>
 		</div>
 

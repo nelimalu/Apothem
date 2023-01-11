@@ -60,31 +60,60 @@ input:checked + .slider:before {
   border-radius: 50%;
 }
 
+body {
+  padding: 0;
+}
+
 #graph {
-	
+	overflow-y: none;
 }
 
 .sidebar {
+  position: relative;
   width: 200%;
-  padding: 5%;
   background-color: white;
+  box-shadow: 25px 30px 60px 10px #dbdbdb;
+}
 
+.sidebar h1 {
+  text-align: center;
 }
 
 .main-content {
   display: grid;
   grid-template-columns: 1fr 1fr 2fr;
+  padding-left: 0;
 }
 
 .white {
   color: white;
-  box-shadow: 20px 2px 50px 5px #888888;
+  
 }
 
 .equations-list {
   outline: none;
 }
 
-equations-list.li {
-  list-style-type: square;
+ol.equations-list {
+  list-style-type: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.equations-list li {
+  display: inline-block;
+  height: 1px;
+  width: 100%;
+  border-radius: 0%;
+  font-size: 120%;
+  padding: 2%;
+  border-top: 1px solid;
+  border-image: linear-gradient(to right, #000000, #ffffff) 1 0 0 0;
+}
+
+.slider-box {
+  position: absolute;
+  bottom: 1%;
+  left: 30%;
 }
