@@ -90,26 +90,17 @@ body {
   
 }
 
-.equations-list {
-  outline: none;
-}
-
-ol.equations-list {
-  list-style-type: none;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.equations-list li {
+#equations-list input {
   display: inline-block;
-  height: 1px;
+  height: 100%;
   width: 100%;
   border-radius: 0%;
   font-size: 120%;
   padding: 2%;
+  padding-top: 5%;
   border-top: 1px solid;
   border-image: linear-gradient(to right, #000000, #ffffff) 1 0 0 0;
+  outline: none;
 }
 
 .slider-box {
