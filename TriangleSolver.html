@@ -52,10 +52,10 @@
 			margin-bottom: 1%;
 		}
 		#answers{
-			visibility: visible;
+			visibility: hidden;
 		}	
-		#secondBottom{
-			visibility: visible;
+		#secondButton{
+			visibility: hidden;
 		}
 	</style>
 	<meta charset="UTF-8">
@@ -139,15 +139,15 @@
 	</div>
 	<script src="js/trianglesolver.js"></script>
 	<br>
-	<div>
-		<div id="answers" class="bottomAnswer">
+	<div id="answers">
+		<div class="bottomAnswer">
 			<u class = "outputText" style= "margin-left: 11%;">Sides</u>
 			<u style = "margin-left: 13%;">Angles</u>
 			<u style = "margin-left: 14.5%;">Medians</u>
 			<u style = "margin-left: 17.5%;">Angle Bisectors</u> 
 		</div>
 
-		<div id="answers" class="bottomAnswer">
+		<div class="bottomAnswer">
 			<z class = "outputText">Side a:</z>
 			<input class="sideAnswers" type="text" id="sideAAnswer"readonly> 
 
@@ -159,7 +159,7 @@
 			<input class="bisecAnswers" type="text" id="bisectorAAnswer"readonly>
 		</div>
 
-		<div id="answers" class="bottomAnswer">
+		<div class="bottomAnswer">
 			<z class = "outputText">Side b:</z>
 			<input class="sideAnswers" type="text" id="sideBAnswer"readonly> 
 
@@ -171,7 +171,7 @@
 			<input class="bisecAnswers" type="text" id="bisectorBAnswer"readonly>
 		</div>
 
-		<div id="answers" class="bottomAnswer">
+		<div class="bottomAnswer">
 			<z class = "outputText">Side c:</z>
 			<input class="sideAnswers" type="text" id="sideCAnswer"readonly> 
 
@@ -182,17 +182,17 @@
 			<z class = "otherText">Angle Bisector of C:</z> 
 			<input class="bisecAnswers" type="text" id="bisectorCAnswer"readonly>
 		</div>
-		<div id="answers" class="bottomAnswer">
+		<div class="bottomAnswer">
 			<z class = "outputText">Area:</z>
 			<input class="areaAnswers" type="text" id="areaAnswer"readonly style="margin-left: 3.9%"> 
 		</div>
 		
 		<div class="bottomAnswer">
-			<z id="answers" class = "outputText">Perimeter:</z>
-			<input id="answers" class="perimAnswers" type="text" id="perimAnswer"readonly> 
+			<z  class = "outputText">Perimeter:</z>
+			<input class="perimAnswers" type="text" id="perimAnswer"readonly> 
 
-			<button id="answers" class="bottomButtons" onclick= "addDigit()">Add a Digit</button>
-			<button id="answers" class="bottomButtons" onclick= "removeDigit()">Remove a Digit</button>
+			<button class="bottomButtons" onclick= "addDigit()">Add a Digit</button>
+			<button class="bottomButtons" onclick= "removeDigit()">Remove a Digit</button>
 			<button id="secondButton" class="bottomButtons" onclick= "secondSolution()">Show Other Solution</button>
 		</div>
 	</div>

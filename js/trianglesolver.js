@@ -408,11 +408,12 @@ function solve(){
 	    if(twoSolutions){
 	    	if(isNaN(sideA) || isNaN(sideB) || isNaN(sideC) || isNaN(sideA2) || isNaN(sideB2) || isNaN(sideC2)) possibleTriangle = false; 
 	    	else if(isNaN(angleA) || isNaN(angleB) || isNaN(angleC) || isNaN(angleA2) || isNaN(angleB2) || isNaN(angleC2)) possibleTriangle = false;
-	    	document.getElementById("secondButton").style.visibility = "visibile";
+	    	document.getElementById("secondButton").style.visibility = "visible";
 	    }
 	    else{
 	    	if(isNaN(sideA) || isNaN(sideB) || isNaN(sideC)) possibleTriangle = false;
 	    	else if(isNaN(angleA) || isNaN(angleB) || isNaN(angleC)) possibleTriangle = false;
+	    	document.getElementById("secondButton").style.visibility = "hidden";
 	    }
 		if((sideA >= (sideB+sideC)) || (sideB>=(sideA+sideC)) || (sideC>=(sideA+sideB)) || !possibleTriangle){
 	    	alert("Triangle is not possible. A triangle cannot be made with the given requirements.");
