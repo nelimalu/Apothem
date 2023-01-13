@@ -3,6 +3,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
+let equation = "y = 2sin(10)";
+let x = nerdamer.solve(equation, 'y');
+console.log(nerdamer.solve(equation, 'y').toString());
+
 var mouse = {
 	pressed: false,
 	x: 0,
@@ -86,14 +90,14 @@ class Graph {
 		let counter = 0;
 		for (let i = this.getXAxisY(); i < canvas.width; i += this.scalePixels) {
 			drawLine(0, i, canvas.width, i, "#bdbdbd");
-			drawText(this.getYAxisX() + 12, i - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
+			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
 
 		counter = 0;
 		for (let i = this.getXAxisY(); i >= 0; i -= this.scalePixels) {
 			drawLine(0, i, canvas.width, i, "#bdbdbd");
-			drawText(this.getYAxisX() + 12, i - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
+			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
 	}
@@ -126,17 +130,32 @@ class Graph {
 		[...document.querySelectorAll('.equation')].forEach((element, j) => {
 			let equation = element.value;
 
+			c.beginPath();
+			c.lineWidth = 3;
+			
+			
+			
 
+			let counter = 0;
 			for (let i = this.min_x; i < this.max_x; i++) {
 				let equation = element.value;
-				equation = equation.replace('x', `*${-i}`);
-				equation = equation.split("y=").pop()
-				
-				let y = eval(equation);
+				equation = equation.replace('x', `${i}`);
+				// console.log(equation);
+				let y = eval(JSON.parse(nerdamer.solve(equation, 'y').toString())[0]);
 
-				console.log(equation);
-				drawCircle(this.getYAxisX() + (i * this.scalePixels), this.getXAxisY() + (y * this.scalePixels), 5, "#000");
+				
+				let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
+				let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval)
+
+				if (counter == 0)
+					c.moveTo(draw_x, draw_y);
+				else
+					c.lineTo(draw_x, draw_y);
+
+				counter++;
 			}
+
+			c.stroke();
 		});
 	}
 }
@@ -172,7 +191,7 @@ document.addEventListener('keydown', function (e) {
 
     if (e.code === 'Backspace') {
     	let equations_list = document.getElementById("equations-list");
-    	if (equations_list.children.length > 1) {
+    	if (equations_list.children.length > 1 && document.activeElement.value.length == 0) {
     		equations_list.removeChild(document.activeElement);
     		equations_list.children[equations_list.children.length - 1].focus();
     	}
