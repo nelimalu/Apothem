@@ -68,6 +68,7 @@ input:checked + .slider:before {
   width: 200%;
   padding: 5%;
   background-color: white;
+
 }
 
 .main-content {
@@ -77,6 +78,7 @@ input:checked + .slider:before {
 
 .white {
   color: white;
+  box-shadow: 20px 2px 50px 5px #888888;
 }
 
 .equations-list {

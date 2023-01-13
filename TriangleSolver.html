@@ -2,15 +2,28 @@
 <html>
 <head>
 	<style type="text/css">
-		input{
+		input[type="number"]{
 			width: 20.5%;
-			height: 60px;
+			height: 100%;
 			text-align: left;
+			font-size: 200%;
+		}
+		input[type="text"]{
+			width: 10.2%;
+			text-align: right;
+			font-size: 200%;
 		}
 		button{
 			font-size: 50px;
 			width: 20.5%;
 			height: 60px;
+		}
+		u{
+			font-size: 217%;
+		}
+		.buttonSolve{
+			width: 20.5%;
+			font-size: 140%;
 		}
 		.inputText{
 			margin-left: 5%;
@@ -26,16 +39,23 @@
 			margin-left: 1%;
 		}
 		.bottomButtons{
+			width: 12%;
 			margin-left: 2.5%;
+			font-size: 140%;
 		}
 		.bottomAnswer{
+			height: 100%;
 			margin-bottom: 1%;
 		}
 		.inputField{
+			height: 20%;
 			margin-bottom: 1%;
 		}
 		#answers{
-			visibility: hidden;
+			visibility: visible;
+		}	
+		#secondBottom{
+			visibility: visible;
 		}
 	</style>
 	<meta charset="UTF-8">
@@ -91,21 +111,21 @@
 		<div>
 			<div class="inputField">
 				<z class = "inputText">Side a:</z>
-				<input class="sides" type="number" id="sideA">
+				<input class="sides" onclick="highlightSideA()" type="number" id="sideA">
 				<z class = "inputText">Angle A:</z>
-				<input class="angles" type="number" id="angleA">
+				<input class="angles" onclick="highlightAngleA()" type="number" id="angleA">
 			</div>
 			<div class="inputField">
 				<z class = "inputText">Side b:</z>
-				<input class="sides" type="number" id="sideB">
+				<input class="sides" onclick="highlightSideB()" type="number" id="sideB">
 				<z class = "inputText">Angle B:</z>
-				<input class="angles" type="number" id="angleB">
+				<input class="angles" onclick="highlightAngleB()" type="number" id="angleB">
 			</div>
 			<div class="inputField">
 				<z class = "inputText">Side c:</z>
-				<input class="sides" type="number" id="sideC">
+				<input class="sides" onclick="highlightSideC()" type="number" id="sideC">
 				<z class = "inputText">Angle C:</z>
-				<input class="angles" type="number" id="angleC">
+				<input class="angles" onclick="highlightAngleC()" type="number" id="angleC">
 			</div>
 			<div class="inputField">
 				<button class="buttonSolve" onclick= "solve()" style="margin-left: 16.3%">Solve</button>
@@ -113,68 +133,67 @@
 			</div>
 		</div>
 		<div>
-			<canvas id="canvasId" width="350" height="350" style="border: 2px solid black;"></canvas>
+			<canvas id="canvasId" width="550" height="350" style="border: 2px solid black;"></canvas>
+			<img id="trianglePic" src="triangle.png" style="display: none;">
 		</div>
 	</div>
 	<script src="js/trianglesolver.js"></script>
 	<br>
-	<div id="answers">
-		<div>
-		<z class = "outputText" style= "margin-left: 11%;">Sides</z>
-		<z style = "margin-left: 13%;">Angles</z>
-		<z style = "margin-left: 14.5%;">Medians</z>
-		<z style = "margin-left: 17.5%;">Angle Bisectors</z> 
+	<div>
+		<div id="answers" class="bottomAnswer">
+			<u class = "outputText" style= "margin-left: 11%;">Sides</u>
+			<u style = "margin-left: 13%;">Angles</u>
+			<u style = "margin-left: 14.5%;">Medians</u>
+			<u style = "margin-left: 17.5%;">Angle Bisectors</u> 
 		</div>
 
-		<div class="bottomAnswer">
-		<z class = "outputText">Side a:</z>
-		<input class="sideAnswers" type="text" id="sideAAnswer"readonly> 
+		<div id="answers" class="bottomAnswer">
+			<z class = "outputText">Side a:</z>
+			<input class="sideAnswers" type="text" id="sideAAnswer"readonly> 
 
-		<z class = "otherText">Angle A:</z>
-		<input class="angleAnswers" type="text" id="angleAAnswer"readonly> 	
-		<z class = "otherText">Median of a:</z>
-		<input class="medianAnswers" type="text" id="medianAAnswer"readonly>
-		<z class = "otherText">Angle Bisector of A:</z> 
-		<input class="bisecAnswers" type="text" id="bisectorAAnswer"readonly>
+			<z class = "otherText">Angle A:</z>
+			<input class="angleAnswers" type="text" id="angleAAnswer"readonly> 	
+			<z class = "otherText">Median of a:</z>
+			<input class="medianAnswers" type="text" id="medianAAnswer"readonly>
+			<z class = "otherText">Angle Bisector of A:</z> 
+			<input class="bisecAnswers" type="text" id="bisectorAAnswer"readonly>
 		</div>
 
-		<div class="bottomAnswer">
-		<z class = "outputText">Side b:</z>
-		<input class="sideAnswers" type="text" id="sideBAnswer"readonly> 
+		<div id="answers" class="bottomAnswer">
+			<z class = "outputText">Side b:</z>
+			<input class="sideAnswers" type="text" id="sideBAnswer"readonly> 
 
-		<z class = "otherText">Angle B:</z>
-		<input class="angleAnswers" type="text" id="angleBAnswer"readonly> 	
-		<z class = "otherText">Median of b:</z>
-		<input class="medianAnswers" type="text" id="medianBAnswer"readonly>
-		<z class = "otherText">Angle Bisector of B:</z> 
-		<input class="bisecAnswers" type="text" id="bisectorBAnswer"readonly>
+			<z class = "otherText">Angle B:</z>
+			<input class="angleAnswers" type="text" id="angleBAnswer"readonly> 	
+			<z class = "otherText">Median of b:</z>
+			<input class="medianAnswers" type="text" id="medianBAnswer"readonly>
+			<z class = "otherText">Angle Bisector of B:</z> 
+			<input class="bisecAnswers" type="text" id="bisectorBAnswer"readonly>
 		</div>
 
-		<div class="bottomAnswer">
-		<z class = "outputText">Side c:</z>
-		<input class="sideAnswers" type="text" id="sideCAnswer"readonly> 
+		<div id="answers" class="bottomAnswer">
+			<z class = "outputText">Side c:</z>
+			<input class="sideAnswers" type="text" id="sideCAnswer"readonly> 
 
-		<z class = "otherText">Angle C:</z>
-		<input class="angleAnswers" type="text" id="angleCAnswer"readonly> 	
-		<z class = "otherText">Median of c:</z>
-		<input class="medianAnswers" type="text" id="medianCAnswer"readonly>
-		<z class = "otherText">Angle Bisector of C:</z> 
-		<input class="bisecAnswers" type="text" id="bisectorCAnswer"readonly>
+			<z class = "otherText">Angle C:</z>
+			<input class="angleAnswers" type="text" id="angleCAnswer"readonly> 	
+			<z class = "otherText">Median of c:</z>
+			<input class="medianAnswers" type="text" id="medianCAnswer"readonly>
+			<z class = "otherText">Angle Bisector of C:</z> 
+			<input class="bisecAnswers" type="text" id="bisectorCAnswer"readonly>
 		</div>
-		<br>
-
-		<div class="bottomAnswer">
-		<z class = "outputText">Area:</z>
-		<input class="areaAnswers" type="text" id="areaAnswer"readonly style="margin-left: 3.9%"> 
+		<div id="answers" class="bottomAnswer">
+			<z class = "outputText">Area:</z>
+			<input class="areaAnswers" type="text" id="areaAnswer"readonly style="margin-left: 3.9%"> 
 		</div>
 		
 		<div class="bottomAnswer">
-		<z class = "outputText">Perimeter:</z>
-		<input class="perimAnswers" type="text" id="perimAnswer"readonly> 
+			<z id="answers" class = "outputText">Perimeter:</z>
+			<input id="answers" class="perimAnswers" type="text" id="perimAnswer"readonly> 
 
-		<button class="bottomButtons" onclick= "addDigit()">Add a Digit</button>
-		<button class="bottomButtons" onclick= "removeDigit()">Remove a Digit</button>
-		<button class="bottomButtons" onclick= "secondSolution()">Show Other Solution</button>
+			<button id="answers" class="bottomButtons" onclick= "addDigit()">Add a Digit</button>
+			<button id="answers" class="bottomButtons" onclick= "removeDigit()">Remove a Digit</button>
+			<button id="secondButton" class="bottomButtons" onclick= "secondSolution()">Show Other Solution</button>
 		</div>
 	</div>
 </body>
