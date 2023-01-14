@@ -3,6 +3,10 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
+let equation = "y = 2sin(10)";
+let x = nerdamer.solve(equation, 'y');
+console.log(nerdamer.solve(equation, 'y').toString());
+
 var mouse = {
 	pressed: false,
 	x: 0,
@@ -36,17 +40,6 @@ function drawText(x, y, message, colour, size, font="monospace") {
 }
 
 
-class Equation {
-	constructor(equation) {
-		this.equation = equation;
-	}
-
-	draw() {
-		
-	}
-}
-
-
 class Graph {
 	constructor() {
 		this.x_offset = 0;
@@ -54,6 +47,8 @@ class Graph {
 		this.zoomLevel = 0;
 		this.scaleInterval = 1;
 		this.scalePixels = 100;
+		this.min_x = 0;
+		this.max_x = 0;
 	}
 
 	getXAxisY() {
@@ -79,6 +74,7 @@ class Graph {
 				drawText(i, this.getXAxisY() - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
+		this.max_x = counter * (this.scaleInterval + 1);
 
 		counter = 0;
 		for (let i = this.getYAxisX(); i >= 0; i -= this.scalePixels) {
@@ -87,20 +83,21 @@ class Graph {
 				drawText(i, this.getXAxisY() - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
+		this.min_x = counter * (this.scaleInterval + 1);
 	}
 
 	drawYIntervals() {
 		let counter = 0;
 		for (let i = this.getXAxisY(); i < canvas.width; i += this.scalePixels) {
 			drawLine(0, i, canvas.width, i, "#bdbdbd");
-			drawText(this.getYAxisX() + 12, i - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
+			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
 
 		counter = 0;
 		for (let i = this.getXAxisY(); i >= 0; i -= this.scalePixels) {
 			drawLine(0, i, canvas.width, i, "#bdbdbd");
-			drawText(this.getYAxisX() + 12, i - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
+			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
 	}
@@ -114,6 +111,7 @@ class Graph {
 	draw() {
 		this.drawIntervals();
 		this.drawAxes();
+		this.drawLines();
 	}
 
 	update() {
@@ -126,6 +124,39 @@ class Graph {
 		}
 
 		this.draw();
+	}
+
+	drawLines() {
+		[...document.querySelectorAll('.equation')].forEach((element, j) => {
+			let equation = element.value;
+
+			c.beginPath();
+			c.lineWidth = 3;
+			
+			
+			
+
+			let counter = 0;
+			for (let i = this.min_x; i < this.max_x; i++) {
+				let equation = element.value;
+				equation = equation.replace('x', `${i}`);
+				// console.log(equation);
+				let y = eval(JSON.parse(nerdamer.solve(equation, 'y').toString())[0]);
+
+				
+				let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
+				let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval)
+
+				if (counter == 0)
+					c.moveTo(draw_x, draw_y);
+				else
+					c.lineTo(draw_x, draw_y);
+
+				counter++;
+			}
+
+			c.stroke();
+		});
 	}
 }
 
@@ -146,6 +177,29 @@ canvas.addEventListener('mousemove', (event) => {
 	}
 });
 
+document.addEventListener('keydown', function (e) {
+	if (![...document.querySelectorAll('.equation')].includes(document.activeElement))
+		return;
+    if (e.code === 'Enter') {
+    	let equations_list = document.getElementById("equations-list");
+    	let new_input = document.createElement("input");
+    	new_input.classList.add('equation');
+    	new_input.spellcheck = false;
+    	equations_list.appendChild(new_input);
+    	new_input.focus();
+    }
+
+    if (e.code === 'Backspace') {
+    	let equations_list = document.getElementById("equations-list");
+    	if (equations_list.children.length > 1 && document.activeElement.value.length == 0) {
+    		equations_list.removeChild(document.activeElement);
+    		equations_list.children[equations_list.children.length - 1].focus();
+    	}
+    }
+
+
+});
+
 canvas.addEventListener('mousewheel', function(event) {
     graph.zoomLevel += event.deltaY < 0 ? SCROLL_SPEED : -SCROLL_SPEED;  // positive zoom in, negative zoom out
 }, false);
@@ -155,7 +209,7 @@ var graph = new Graph();
 function animate() {
     window.requestAnimationFrame(animate);
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight - document.getElementById("navbar").clientHeight;
 
     graph.update();
 }

@@ -13,16 +13,16 @@
     	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
     	<script src="js/Libraries/three.min.js"></script>
+    	<script src="js/Libraries/nerdamer.min.js"></script>
 
 	    <link rel="stylesheet" href="./styles/style.css">
 	    <link rel="stylesheet" href="./styles/graphing.css">
 	</head>
 
 	<body>
-		<canvas id="graph"></canvas>
 		<!-- NAVBAR -->
 		
-		<nav class="navbar navbar-expand-lg navbar-light custom-colour">
+		<nav id="navbar" class="navbar navbar-expand-lg navbar-light custom-colour">
 		  <div class="container-fluid">
 		    <span class="navbar-brand" href='/'>
 		    	<img id="logo" src="assets/images/logo.ico" alt="logo" height="40">
@@ -36,9 +36,6 @@
 			        <li class="nav-button-container">
 			          <a class="nav-button active-button" aria-current="page" href='PhotoSolver.html'>PHOTO</a>
 			        </li>
-			        <li class="nav-button-container">
-						<a class="nav-button" href='Lessons.html'>LESSONS</a>
-					</li>
 					<li class="nav-button-container">
 						<a class="nav-button" href='Graphing.html'>GRAPHING</a>
 					</li>
@@ -54,14 +51,28 @@
 		  </div>
 		</nav>
 
-		<span>2D</span>
-		<label class="switch">
-			<input type="checkbox">
-			<span class="slider round"></span>
-		</label>
-		<span>3D</span>
+		<div class="main-content">
+			<div class="sidebar">
+				<div>
+					<h1>Equations</h1>
 
-		
+					<div id="equations-list">
+						<input class="equation" spellcheck="false">
+					</div>
+				</div>
+				<div class="slider-box">
+					<span>2D</span>
+					<label class="switch">
+						<input type="checkbox">
+						<span class="slider round"></span>
+					</label>
+					<span>3D</span>
+				</div>
+			</div>
+			<!--<div class="white">Luka&Pouya</div>-->
+			<canvas id="graph"></canvas>
+		</div>
+
 		<script src="js/graphing.js"></script>
 	</body>
 </html>

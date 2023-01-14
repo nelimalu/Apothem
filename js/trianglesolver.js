@@ -6,8 +6,41 @@ var drawingAngleB = 0.0;
 var drawingAngleC = 0.0;
 let myCanvas = document.getElementById("canvasId");
 let myContext = myCanvas.getContext("2d");
+
+var image = document.getElementById("trianglePic");
+//myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+
+function highlightSideA(){
+	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+	myContext.fillStyle = `rgb(0,0,0,0.3)`; 
+	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
+	myContext.beginPath();
+	myContext.fillStyle = `rgb(255,255,255)`; 
+	myContext.ellipse(140, 120, 50, 50, 0,0,2 * Math.PI);
+	myContext.fill();
+}
+function highlightSideB(){
+	myContext.fillStyle = "white";
+	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
+	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+}
+function highlightSideC(){
+	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+}
+
+function highlightAngleA(){
+	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+}
+function highlightAngleB(){
+	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+}
+function highlightAngleC(){
+	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+}
+
 function drawTriangle(ctx, canvas){
-	//600,190, max 350 
+	ctx.fillStyle = "white";
+	ctx.fillRect(0,0,canvas.width,canvas.height);
 	let maxLength = 300;
 	let largestLength = Math.max(drawingSideA, drawingSideB, drawingSideC);
 	let multBy = (maxLength + 0.0)/largestLength;
@@ -16,9 +49,14 @@ function drawTriangle(ctx, canvas){
 	drawingSideC *= multBy;
 	let smallestLength = Math.min(drawingSideA, drawingSideB, drawingSideC);
 	largestLength *= multBy;
-	let startX = 150 + (largestLength/2.0); 
-	let startY = 250; 
+	let startX = 150 + (smallestLength/2.0); 
+	let startY = 330; 
+	ctx.lineWidth = 3;
 	if(smallestLength == drawingSideA){
+		var height = parseFloat(startY) - (parseFloat(startY) - parseFloat(drawingSideB));
+		var width = 150 + parseFloat(startX) - (parseFloat(startX) - parseFloat(drawingSideA));
+		if(height<200) ctx.translate(width/2, -height/2);
+		else if(height<250) ctx.translate(width/2, -height/4);
 		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
@@ -40,8 +78,14 @@ function drawTriangle(ctx, canvas){
 		}	
 		ctx.closePath();
 		ctx.stroke();
+		ctx.translate(-startX, -startY);
+		ctx.translate(-width/2, height/2);
 	}
 	else if(smallestLength == drawingSideB){
+		var height = parseFloat(startY) - (parseFloat(startY) - parseFloat(drawingSideA));
+		var width = 150 + parseFloat(startX) - (parseFloat(startX) - parseFloat(drawingSideB));
+		if(height<200) ctx.translate(width/2, -height/2);
+		else if(height<350) ctx.translate(width/2, -height/4);
 		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
@@ -63,8 +107,14 @@ function drawTriangle(ctx, canvas){
 		}	
 		ctx.closePath();
 		ctx.stroke();
+		ctx.translate(-startX, -startY);
+		ctx.translate(-width/2, height/2);
 	}
 	else{ 
+		var height = parseFloat(startY) - (parseFloat(startY) - parseFloat(drawingSideB));
+		var width = 150 + parseFloat(startX) - (parseFloat(startX) - parseFloat(drawingSideC));
+		if(height<200) ctx.translate(width/2, -height/2);
+		else if(height<250) ctx.translate(width/2, -height/4);
 		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
@@ -86,13 +136,18 @@ function drawTriangle(ctx, canvas){
 		}
 		ctx.closePath();
 		ctx.stroke();
+		ctx.translate(-startX, -startY);
+		ctx.translate(-width/2, height/2);
 	}
+	console.log(width + "," + height);
 }
 //Two solution question doesnt work
 var digitCounter = 0;
 var twoSolutions = false;
 var showSolution1 = true;
+
 function solve(){
+	document.getElementById('answers').style.visibility = 'visible';
 	var sideA = document.getElementById('sideA').value;
 	var sideB = document.getElementById('sideB').value;
 	var sideC = document.getElementById('sideC').value;
@@ -208,7 +263,7 @@ function solve(){
 					}
 					else{
 						twoSolutions = false;
-						angleA = Math.asin((sideA*Math.sin(angleB * Math.PI / 180.0)) / sideB) / (Math.PI / 180);
+						angleB = Math.asin((sideB*Math.sin(angleA * Math.PI / 180.0)) / sideA) / (Math.PI / 180);
 						angleC = 180 - angleB - angleA;
 						sideC = sideB * Math.sin(angleC * Math.PI / 180.0) / Math.sin(angleB * Math.PI / 180.0);
 					}
@@ -353,10 +408,12 @@ function solve(){
 	    if(twoSolutions){
 	    	if(isNaN(sideA) || isNaN(sideB) || isNaN(sideC) || isNaN(sideA2) || isNaN(sideB2) || isNaN(sideC2)) possibleTriangle = false; 
 	    	else if(isNaN(angleA) || isNaN(angleB) || isNaN(angleC) || isNaN(angleA2) || isNaN(angleB2) || isNaN(angleC2)) possibleTriangle = false;
+	    	document.getElementById("secondButton").style.visibility = "visible";
 	    }
 	    else{
 	    	if(isNaN(sideA) || isNaN(sideB) || isNaN(sideC)) possibleTriangle = false;
 	    	else if(isNaN(angleA) || isNaN(angleB) || isNaN(angleC)) possibleTriangle = false;
+	    	document.getElementById("secondButton").style.visibility = "hidden";
 	    }
 		if((sideA >= (sideB+sideC)) || (sideB>=(sideA+sideC)) || (sideC>=(sideA+sideB)) || !possibleTriangle){
 	    	alert("Triangle is not possible. A triangle cannot be made with the given requirements.");
@@ -518,6 +575,9 @@ function printTwo(name, thing1, thing2){
 	document.getElementById(name).value = thing1 + " OR " + thing2;
 }
 function clearField(){
+	myContext.fillStyle = "yellow";
+	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
+	document.getElementById('answers').style.visibility = 'hidden';
 	if(document.getElementById('sideA').value != "") document.getElementById('sideA').value = "";
 	if(document.getElementById('sideB').value != "") document.getElementById('sideB').value = "";
 	if(document.getElementById('sideC').value != "") document.getElementById('sideC').value = "";
@@ -546,8 +606,6 @@ function clearField(){
 	digitCounter = 0;
 	twoSolutions = false;
 	showSolution1 = true;
-	myContext.fillStyle = "white";
-	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
 }
 function addDigit(){
 	digitCounter = parseFloat(digitCounter) + 1;
