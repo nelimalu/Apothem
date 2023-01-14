@@ -9,7 +9,7 @@ var mouse = {
 	y: 0,
 }
 
-const SCROLL_SPEED = 3;
+const SCROLL_SPEED = 6;
 const ZOOM_CAP = 60;
 const NUMBER_FONT_SIZE = 20;
 
