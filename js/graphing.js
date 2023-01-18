@@ -46,6 +46,8 @@ class Graph {
 		this.scalePixels = 100;
 		this.min_x = 0;
 		this.max_x = 0;
+		this.min_y = 0;
+		this.max_y = 0;
 	}
 
 	getXAxisY() {
@@ -90,6 +92,7 @@ class Graph {
 			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
+		this.max_y = counter * this.scaleInterval;
 
 		counter = 0;
 		for (let i = this.getXAxisY(); i >= 0; i -= this.scalePixels) {
@@ -97,6 +100,7 @@ class Graph {
 			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
+		this.min_y = counter * this.scaleInterval;
 	}
 
 	drawIntervals() {
@@ -135,22 +139,33 @@ class Graph {
 			try {
 				var equation = nerdamer(element.value).solveFor('y').toString();
 				
-				
 				let counter = 0;
-				console.log(this.min_x, this.max_x);
+				let ended_line = false;
+				let prev_y = 0;
+
 				for (let i = this.min_x; i < this.max_x; i += (this.max_x - this.min_x) / 150) {
 					let new_equation = equation.replaceAll('x', `(${i})`);
 					let y = eval(nerdamer(new_equation).evaluate().toString());
 
 					
-					let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
-					let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval)
-
-					if (counter == 0)
-						c.moveTo(draw_x, draw_y);
-					else
-						c.lineTo(draw_x, draw_y);
-
+					if (y < this.max_y * 2 && y > this.min_y * 2) {
+						let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
+						let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval);
+						
+						if (counter == 0)
+							c.moveTo(draw_x, draw_y);
+						else {
+							if (Math.abs(prev_y - y) > Math.abs(this.max_y - this.min_y) / 2) {
+								if (prev_y < y)
+									c.lineTo(draw_x, 0);
+								else
+									c.lineTo(draw_x, canvas.height);
+								c.moveTo(draw_x, draw_y);
+							} else
+								c.lineTo(draw_x, draw_y);
+						}
+					}
+					prev_y = y;
 					counter++;
 				}
 
