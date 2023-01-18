@@ -49,7 +49,45 @@
 		  </div>
 		</nav>
 
-		<input type="text" autocomplete="Enter equation...">
-		<button id="submit" onclick="solveEquation()">submit</button>
+		<div>
+		<input id="output" type="text" placeholder="0" readonly></input>
+	</div>
+	<div>
+		<button onclick="enterNum('(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">(</button>
+		<button onclick="enterNum(')')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">)</button>
+		<button onclick="enterNum('Sin(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">Sin</button>
+		<button onclick="enterNum('Cos(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">Cos</button>
+		<button onclick="enterNum('Tan(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">Tan</button>
+		<button onclick="enterNum('π')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">π</button>
+		<button onclick="enterNum('√(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">√</button>
+	</div>
+	<div>
+		<button onclick="enterNum('7')">7</button>
+		<button onclick="enterNum('8')">8</button>
+		<button onclick="enterNum('9')">9</button>
+		<button onclick="del()">DEL</button>
+		<button onclick="clearAll()">AC</button>
+	</div>
+	<div>
+		<button onclick="enterNum('4')">4</button>
+		<button onclick="enterNum('5')">5</button>
+		<button onclick="enterNum('6')">6</button>
+		<button onclick="enterNum('x')" style="background-color: orange;">x</button>
+		<button onclick="enterNum('÷')" style="background-color: orange;">÷</button>
+	</div>
+	<div>
+		<button onclick="enterNum('1')">1</button>
+		<button onclick="enterNum('2')">2</button>
+		<button onclick="enterNum('3')">3</button>
+		<button onclick="enterNum('+')" style="background-color: orange;">+</button>
+		<button onclick="enterNum('-')" style="background-color: orange;">-</button>
+	</div>
+	<div>
+		<button onclick="enterNum('0')">0</button>
+		<button onclick="enterNum('.')">.</button>
+		<button onclick="enterNum('^')">^</button>
+		<button onclick="answer()">ANS</button>
+		<button onclick="equal()" style="background-color: orange;">=</button>
+	</div>
 	</body>
 </html>

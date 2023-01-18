@@ -3,10 +3,6 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
-let equation = "y = 2sin(10)";
-let x = nerdamer.solve(equation, 'y');
-console.log(nerdamer.solve(equation, 'y').toString());
-
 var mouse = {
 	pressed: false,
 	x: 0,
@@ -14,7 +10,8 @@ var mouse = {
 }
 
 const SCROLL_SPEED = 3;
-const ZOOM_CAP = 60;
+const MIN_ZOOM_CAP = -50;
+const MAX_ZOOM_CAP = 100;
 const NUMBER_FONT_SIZE = 20;
 
 
@@ -74,7 +71,7 @@ class Graph {
 				drawText(i, this.getXAxisY() - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
-		this.max_x = counter * (this.scaleInterval + 1);
+		this.max_x = counter * (this.scaleInterval);
 
 		counter = 0;
 		for (let i = this.getYAxisX(); i >= 0; i -= this.scalePixels) {
@@ -83,7 +80,7 @@ class Graph {
 				drawText(i, this.getXAxisY() - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
-		this.min_x = counter * (this.scaleInterval + 1);
+		this.min_x = counter * (this.scaleInterval);
 	}
 
 	drawYIntervals() {
@@ -118,8 +115,12 @@ class Graph {
 		this.scalePixels = this.zoomLevel + 100;
 		
 		// if user zooms to far, resize the scale to fit zoom level
-		if (this.zoomLevel > ZOOM_CAP || this.zoomLevel < -ZOOM_CAP / 2) {
-			this.scaleInterval *= this.zoomLevel < 0 ? 2 : 0.5;
+		if (this.zoomLevel > MAX_ZOOM_CAP) {
+			this.scaleInterval *= 0.5;
+			this.zoomLevel = 0;
+		}
+		if (this.zoomLevel < MIN_ZOOM_CAP) {
+			this.scaleInterval *= 2;
 			this.zoomLevel = 0;
 		}
 
@@ -128,34 +129,33 @@ class Graph {
 
 	drawLines() {
 		[...document.querySelectorAll('.equation')].forEach((element, j) => {
-			let equation = element.value;
-
 			c.beginPath();
 			c.lineWidth = 3;
 			
-			
-			
-
-			let counter = 0;
-			for (let i = this.min_x; i < this.max_x; i++) {
-				let equation = element.value;
-				equation = equation.replace('x', `${i}`);
-				// console.log(equation);
-				let y = eval(JSON.parse(nerdamer.solve(equation, 'y').toString())[0]);
-
+			try {
+				var equation = nerdamer(element.value).solveFor('y').toString();
 				
-				let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
-				let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval)
+				
+				let counter = 0;
+				console.log(this.min_x, this.max_x);
+				for (let i = this.min_x; i < this.max_x; i += (this.max_x - this.min_x) / 150) {
+					let new_equation = equation.replaceAll('x', `(${i})`);
+					let y = eval(nerdamer(new_equation).evaluate().toString());
 
-				if (counter == 0)
-					c.moveTo(draw_x, draw_y);
-				else
-					c.lineTo(draw_x, draw_y);
+					
+					let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
+					let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval)
 
-				counter++;
-			}
+					if (counter == 0)
+						c.moveTo(draw_x, draw_y);
+					else
+						c.lineTo(draw_x, draw_y);
 
-			c.stroke();
+					counter++;
+				}
+
+				c.stroke();
+			} catch (e) {}
 		});
 	}
 }
@@ -201,7 +201,7 @@ document.addEventListener('keydown', function (e) {
 });
 
 canvas.addEventListener('mousewheel', function(event) {
-    graph.zoomLevel += event.deltaY < 0 ? SCROLL_SPEED : -SCROLL_SPEED;  // positive zoom in, negative zoom out
+    graph.zoomLevel += event.deltaY < 0 ? SCROLL_SPEED * 1.5 : -SCROLL_SPEED;  // positive zoom in, negative zoom out
 }, false);
 
 var graph = new Graph();
