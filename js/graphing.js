@@ -132,20 +132,12 @@ class Graph {
 
 			c.beginPath();
 			c.lineWidth = 3;
-			
-			
-			
-
 			let counter = 0;
-			for (let i = this.min_x; i < this.max_x; i++) {
-				let equation = element.value;
-				equation = equation.replace('x', `${i}`);
-				// console.log(equation);
-				let y = eval(JSON.parse(nerdamer.solve(equation, 'y').toString())[0]);
-
+			for (let i = this.min_x; i < this.max_x; i += (this.max_x - this.min_x) / 200) {
+				let y = [1];//eval(nerdamer.solve(element.value.replace('x', `(${i})`), 'y').evaluate().toString());
 				
 				let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
-				let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval)
+				let draw_y = this.getXAxisY() - (y[0] * this.scalePixels / this.scaleInterval)
 
 				if (counter == 0)
 					c.moveTo(draw_x, draw_y);
