@@ -14,6 +14,63 @@
 
 	    <link rel="stylesheet" href="./styles/style.css">
 	    <script src="js/calculator.js"></script>
+	    <script src="js/Libraries/nerdamer.min.js"></script>
+
+	    <style type="text/css">
+	    	.leftSide{
+	    		margin-left: 30%;
+	    	}
+	    	#output{
+	    		margin-left: 30%;
+	    		margin-bottom: 2%;
+	    		font-size: 200%;
+	    		width: 40%;
+	    		text-align: left;
+	    		border-color: black;
+	    	}
+	    	.rightSide{
+	    		margin-left: 4%;
+	    	}
+	    	button{
+	    		width: 5%;
+	    		font-size: 200%;
+	    	}
+	    	.eval{
+	    		margin-top: 2%;
+	    		margin-left: 45%;
+	    		width: 10%;
+	    	}
+	    	#xButton{
+	    		background-color: orange; 
+	    		visibility: hidden;
+	    		width: 10%;
+	    		margin-top: 2%;
+	    		margin-left: 30%;
+	    	}
+	    	#yButton{
+	    		background-color: orange; 
+	    		visibility: hidden;
+	    		width: 10%;
+	    		margin-top: 2%;
+	    		margin-left: 4.8%;
+	    	}
+	    	#zButton{
+	    		background-color: orange; 
+	    		visibility: hidden;
+	    		width: 10%;
+	    		margin-top: 2%;
+	    		margin-left: 4.8%;
+	    	}
+	    	#answer{
+	    		visibility: hidden;
+	    		margin-left: 30%;
+	    		margin-top: 2%;
+	    		font-size: 200%;
+	    		width: 40%;
+	    		text-align: left;
+	    		border-color: black;
+	    	}
+	    </style>
 	</head>
 
 	<body>
@@ -49,45 +106,67 @@
 		  </div>
 		</nav>
 
-		<div>
-		<input id="output" type="text" placeholder="0" readonly></input>
+	<div class="input">
+		<input id="output" type="text" placeholder="0"></input>
 	</div>
-	<div>
-		<button onclick="enterNum('(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">(</button>
-		<button onclick="enterNum(')')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">)</button>
-		<button onclick="enterNum('Sin(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">Sin</button>
-		<button onclick="enterNum('Cos(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">Cos</button>
-		<button onclick="enterNum('Tan(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">Tan</button>
-		<button onclick="enterNum('π')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">π</button>
-		<button onclick="enterNum('√(')" style="width: 48.7px; height: 45px; font-size: 20px; background-color: #a5a5a5; color: black;">√</button>
-	</div>
-	<div>
-		<button onclick="enterNum('7')">7</button>
+	<div class="things">
+		<button class="leftSide" onclick="enterNum('(')">(</button>
+		<button onclick="enterNotNum(')')">)</button>
+		<button onclick="enterOp('^')">^</button>
+
+		<button class="rightSide" onclick="enterNum('7')">7</button>
 		<button onclick="enterNum('8')">8</button>
 		<button onclick="enterNum('9')">9</button>
-		<button onclick="del()">DEL</button>
-		<button onclick="clearAll()">AC</button>
+		<button onclick="enterOp('÷')" style="background-color: orange;">÷</button>
 	</div>
-	<div>
-		<button onclick="enterNum('4')">4</button>
+	<div class="things">
+		<button class="leftSide" onclick="enterNotNum('Sin(')">Sin</button>
+		<button onclick="enterNotNum('Cos(')">Cos</button>
+		<button onclick="enterNotNum('Tan(')">Tan</button>
+
+		<button class="rightSide" onclick="enterNum('4')">4</button>
 		<button onclick="enterNum('5')">5</button>
 		<button onclick="enterNum('6')">6</button>
-		<button onclick="enterNum('x')" style="background-color: orange;">x</button>
-		<button onclick="enterNum('÷')" style="background-color: orange;">÷</button>
+		<button onclick="enterOp('*')" style="background-color: orange;">x</button>
 	</div>
-	<div>
-		<button onclick="enterNum('1')">1</button>
+	<div class="things">
+		<button class="leftSide" onclick="enterNotNum('π')">π</button>
+		<button onclick="enterNum('√(')" >√</button>
+		<button onclick="enterNotNum('!')">!</button>
+
+		<button class="rightSide" onclick="enterNum('1')">1</button>
 		<button onclick="enterNum('2')">2</button>
 		<button onclick="enterNum('3')">3</button>
-		<button onclick="enterNum('+')" style="background-color: orange;">+</button>
-		<button onclick="enterNum('-')" style="background-color: orange;">-</button>
+		<button onclick="enterOp('+')" style="background-color: orange;">+</button>
+	</div>
+	<div class="things">
+		<button class="leftSide" onclick="enterNotNum('X')">X</button>
+		<button onclick="enterNotNum('Y')">Y</button>
+		<button onclick="enterNotNum('Z')">Z</button>
+
+		<button class="rightSide" onclick="enterNum('0')">0</button>
+		<button onclick="enterNum('.')">.</button>
+		<button onclick="enterOp('=')" style="background-color: orange;">=</button>
+		<button onclick="enterOp('-')" style="background-color: orange;">-</button>
+	</div>
+	<div class="things">
+		<button class="leftSide" onclick="enterNum('log(')">Log</button>
+		<button onclick="enterNum('log10(')">Log10</button>
+		<button onclick="enterNotNum('%')">%</button>
+
+		<button class="rightSide" onclick="clearAll()">AC</button>
+		<button onclick="del()">DEL</button>
 	</div>
 	<div>
-		<button onclick="enterNum('0')">0</button>
-		<button onclick="enterNum('.')">.</button>
-		<button onclick="enterNum('^')">^</button>
-		<button onclick="answer()">ANS</button>
-		<button onclick="equal()" style="background-color: orange;">=</button>
+		<button class="eval" onclick="equal()" style="background-color: orange;">Evaluate</button>
+	</div>
+	<div>
+		<button id="xButton" onclick="solveFor('X')">Solve For X</button>
+		<button id="yButton" onclick="solveFor('Y')">Solve For Y</button>
+		<button id="zButton" onclick="solveFor('Z')">Solve For Z</button>
+	</div>
+	<div>
+		<input id="answer" type="text" readonly></input>
 	</div>
 	</body>
 </html>
