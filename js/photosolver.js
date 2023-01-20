@@ -1,11 +1,11 @@
-function handleImage(evt) {
-	let tgt = evt.target || window.event.srcElement
-    let files = tgt.files;
-    console.log(files[0]);
-    console.log(files[0].name)
-    sendToAPI(files[0]);
-}
+function handleImage(file) {
+    console.log(file);
 
+    
+    //evt.preventDefault();
+
+    //sendToAPI(files[0]);
+}
 
 function sendToAPI(file) {
 	const data = new FormData();

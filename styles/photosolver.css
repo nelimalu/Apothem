@@ -1,0 +1,33 @@
+.drop-area {
+	display: flex;
+	width: 80%;
+	margin: 10%;
+	margin-top: 1%;
+	background-color: white;
+	border: 2px solid gray;
+	border-radius: 3px;
+	transition: 0.2s;
+}
+
+.drop-area-container {
+	display: flex;
+	justify-content: center;
+}
+
+.file-input {
+	position: absolute;
+	left: 0;
+	top: 10%;
+	height: 100%;
+	width: 100%;
+	cursor: pointer;
+	opacity: 0;
+}
+
+.file-input:focus {
+	outline: none;
+}
+
+.drop-image {
+	margin: auto;
+}
