@@ -13,6 +13,7 @@
     	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 
 	    <link rel="stylesheet" href="./styles/style.css">
+	    <link rel="stylesheet" href="./styles/photosolver.css">
 	    <script src="js/photosolver.js"></script>
 	</head>
 
@@ -49,7 +50,19 @@
 		  </div>
 		</nav>
 
-		<input type="file" id="imageInput" accept="image/png, image/jpeg" onchange="sendToAPI()">
+		<div class="drop-area-container">
+			<div class="drop-area">
+				<input class="file-input" type="file" id="file-zone" accept="image/jpg image/png" onchange="handleImage(this.files[0])">
+				<img class="drop-image" src="assets/images/upload.png">
+				
+				<br>
+				<div>
+					
+					<span class="fake-btn">Choose files</span>
+					<span class="file-msg">or drag and drop files here</span>
+				</div>
+			</div>
+		</div>
 
 	</body>
 </html>

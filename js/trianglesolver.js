@@ -1,3 +1,4 @@
+//Variables
 var drawingSideA = 0.0;
 var drawingSideB = 0.0;
 var drawingSideC = 0.0;
@@ -6,60 +7,223 @@ var drawingAngleB = 0.0;
 var drawingAngleC = 0.0;
 let myCanvas = document.getElementById("canvasId");
 let myContext = myCanvas.getContext("2d");
+var trigIsSolved = false;
 
-var image = document.getElementById("trianglePic");
-//myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
-
-function highlightSideA(){
-	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
-	myContext.fillStyle = `rgb(0,0,0,0.3)`; 
-	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
+//If the enter key is pressed, the triangle solve button is pressed
+window.addEventListener('keydown' ,(e) => {
+	if ([...document.querySelectorAll('.box')].includes(document.activeElement) && e.code === "Enter"){
+		solve();
+	}
+})
+//Drawing the basic triangle on the canvas 
+function drawBasicTrig(){
+	myContext.fillStyle = 'white';
+	myContext.strokeStyle = 'black';
+	myContext.lineWidth = 3;
+	myContext.fillRect(-150,-150,1000,1000);
 	myContext.beginPath();
-	myContext.fillStyle = `rgb(255,255,255)`; 
-	myContext.ellipse(140, 120, 50, 50, 0,0,2 * Math.PI);
+	myContext.moveTo(165,275);
+	myContext.lineTo(425,245);
+	myContext.lineTo(280,65);
+	myContext.closePath();
+	myContext.stroke();
+	myContext.fillStyle = 'black';
+	myContext.font = "30px serif";
+	myContext.fillText("A", 140, 295);
+	myContext.fillText("B", 425, 275);
+	myContext.fillText("C", 265, 55);
+
+	myContext.fillText("a", 370, 155);
+	myContext.fillText("c", 290, 295);
+	myContext.fillText("b", 190, 165);
+}
+drawBasicTrig();
+
+//Highlighting side A when side A is selected
+function highlightSideA(){
+	drawBasicTrig();
+	myContext.fillStyle = `rgb(0,0,0,0.3)`;
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
+
+	myContext.fillStyle = 'white';
+	myContext.ellipse(378,145,20,20,0,0,2*Math.PI);
 	myContext.fill();
+	myContext.fillStyle = 'black';
+	myContext.fillText("a", 370, 155);
+	if(trigIsSolved) drawTriangle(myContext, myCanvas);
 }
+
+//Highlighting side B when side B is selected
 function highlightSideB(){
-	myContext.fillStyle = "white";
-	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
-	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+	drawBasicTrig();
+	myContext.fillStyle = `rgb(0,0,0,0.3)`;
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
+
+	myContext.fillStyle = 'white';
+	myContext.ellipse(198,155,20,20,0,0,2*Math.PI);
+	myContext.fill();
+	myContext.fillStyle = 'black';
+	myContext.fillText("b", 190, 165);
+	if(trigIsSolved) drawTriangle(myContext, myCanvas);
 }
+
+//Highlighting side C when side C is selected
 function highlightSideC(){
-	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+	drawBasicTrig();
+	myContext.fillStyle = `rgb(0,0,0,0.3)`;
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
+
+	myContext.fillStyle = 'white';
+	myContext.ellipse(298,285,20,20,0,0,2*Math.PI);
+	myContext.fill();
+	myContext.fillStyle = 'black';
+	myContext.fillText("c", 290, 295);
+	if(trigIsSolved) drawTriangle(myContext, myCanvas);
 }
 
+//Highlighting angle A when angle A is selected
 function highlightAngleA(){
-	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
-}
-function highlightAngleB(){
-	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
-}
-function highlightAngleC(){
-	myContext.drawImage(image,0,0,myCanvas.width,myCanvas.height);
+	drawBasicTrig();
+	myContext.fillStyle = `rgb(0,0,0,0.3)`;
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
+
+	myContext.fillStyle = 'white';
+	myContext.ellipse(150,285,20,20,0,0,2*Math.PI);
+	myContext.fill();
+	myContext.fillStyle = 'black';
+	myContext.fillText("A", 140, 295);
+	if(trigIsSolved) drawTriangle(myContext, myCanvas);
 }
 
+//Highlighting angle B when angle B is selected
+function highlightAngleB(){
+	drawBasicTrig();
+	myContext.fillStyle = `rgb(0,0,0,0.3)`;
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
+
+	myContext.fillStyle = 'white';
+	myContext.ellipse(435,265,20,20,0,0,2*Math.PI);
+	myContext.fill();
+	myContext.fillStyle = 'black';
+	myContext.fillText("B", 425, 275);
+	if(trigIsSolved) drawTriangle(myContext, myCanvas);
+}
+
+//Highlighting angle C when angle C is selected
+function highlightAngleC(){
+	drawBasicTrig();
+	myContext.fillStyle = `rgb(0,0,0,0.3)`;
+	myContext.fillRect(0,0,myCanvas.width, myCanvas.height);
+	myContext.fillStyle = 'white';
+	myContext.ellipse(276,45,20,20,0,0,2*Math.PI);
+	myContext.fill();
+	myContext.fillStyle = 'black';
+	myContext.fillText("C", 265, 55);
+	if(trigIsSolved) drawTriangle(myContext, myCanvas);
+}
+
+
+//Drawing the user's triangle
 function drawTriangle(ctx, canvas){
+
+	/*
+	How triangles are drawn: First, the method draws the smallest side length flat on the canvas.
+	Then, it draws a second side length 90 degrees up. That side length is then rotated to the angle
+	it should be on, and is finally reconnected to the original point to draw the third and last side. 
+	*/
+
 	ctx.fillStyle = "white";
 	ctx.fillRect(0,0,canvas.width,canvas.height);
-	let maxLength = 300;
-	let largestLength = Math.max(drawingSideA, drawingSideB, drawingSideC);
+	let maxLength = 300; //Longest length allowed for a triangle side
+	let largestLength = Math.max(drawingSideA, drawingSideB, drawingSideC); //Largest length
 	let multBy = (maxLength + 0.0)/largestLength;
+
+	//Making side lengths bigger/smaller to fit the canvas
 	drawingSideA *= multBy;
 	drawingSideB *= multBy;
 	drawingSideC *= multBy;
-	let smallestLength = Math.min(drawingSideA, drawingSideB, drawingSideC);
+
+	let smallestLength = Math.min(drawingSideA, drawingSideB, drawingSideC); //Smallest length
 	largestLength *= multBy;
-	let startX = 150 + (smallestLength/2.0); 
-	let startY = 330; 
-	ctx.lineWidth = 3;
+
+	//Starting coordiantes
+	let startX = 350 + (smallestLength/2.0); 
+	let startY = 330;
+
+	var xCord1 = 0.0;
+	var xCord2 = 0.0;
+	var xCord3 = 0.0;
+	var yCord1 = 0.0;
+	var yCord2 = 0.0;
+	var yCord3 = 0.0;
+	var height = 0.0;
+	var width = 0.0;
+
+	startX = parseFloat(startX); 
+	startY = parseFloat(startY);
+	drawingSideA = parseFloat(drawingSideA);
+	drawingSideB = parseFloat(drawingSideB);
+	drawingSideC = parseFloat(drawingSideC);
+
+	ctx.lineWidth = 3; //Thickness of side lengths
+
+
 	if(smallestLength == drawingSideA){
-		var height = parseFloat(startY) - (parseFloat(startY) - parseFloat(drawingSideB));
-		var width = 150 + parseFloat(startX) - (parseFloat(startX) - parseFloat(drawingSideA));
-		if(height<200) ctx.translate(width/2, -height/2);
-		else if(height<250) ctx.translate(width/2, -height/4);
+
+	/*Translating the screen to centre the triangle on the canvas
+	Translating is done by finding the total width and height of the triangle
+	after it is done being drawn. */
+
+		if(drawingAngleC > 90){
+			yCord1 = startY;
+			yCord2 = startY;
+			yCord3 = (((startY-drawingSideB) - startY) * Math.cos((drawingAngleC - 90) * Math.PI / 180) + startY);
+			smallestY = Math.min(yCord1,yCord2,yCord3);
+			if(smallestY>100){
+				ctx.translate(0,-(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,(50 - smallestY));
+			}
+		}
+		else{
+			if (drawingAngleC < 90){
+				yCord1 = startY;
+				yCord2 = startY;
+				yCord3 = (((startY-drawingSideB) - startY) * Math.cos( (360 - (drawingAngleC - 90)) * Math.PI / 180) + startY);
+				xCord1 = startX;
+				xCord2 = startX - drawingSideA;
+				xCord3 = (-((startY-drawingSideB) - startY) * Math.sin((360 - (drawingAngleC - 90)) * Math.PI / 180) + startX );
+			}
+			else{
+				yCord1 = startY;
+				yCord2 = startY;
+				yCord3 = startY - drawingSideB;
+				xCord1 = startX;
+				xCord2 = startX - drawingSideA;
+				xCord3 = startX;
+			}
+			smallestY = Math.min(yCord1,yCord2,yCord3);
+			smallestX = Math.min(xCord1,xCord2,xCord3);
+			if(smallestY>50){
+				ctx.translate(0,-(smallestY - 50));
+			}
+			else{
+				ctx.translate(0,(50 - smallestY));
+			}
+			if(smallestX>150){
+				ctx.translate(-(smallestX - 150),0);
+			}
+			else{
+				ctx.translate((150 - smallestX),0);
+			}
+		}
+
+	//Actually drawing the triangle
 		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
+		ctx.fillStyle = 'black';
 		startX -= drawingSideA;
 		ctx.lineTo(startX, startY);
 		ctx.translate(startX, startY);
@@ -75,17 +239,84 @@ function drawTriangle(ctx, canvas){
 		}
 		else{
 			ctx.lineTo(0, -drawingSideB);
+			ctx.fillText("A", 10, startY - 10 - drawingSideB);
 		}	
 		ctx.closePath();
 		ctx.stroke();
 		ctx.translate(-startX, -startY);
-		ctx.translate(-width/2, height/2);
+		if(drawingAngleC > 90){
+			if(smallestY>50){
+				ctx.translate(0,(smallestY - 50));
+			}
+			else{
+				ctx.translate(0,-(50 - smallestY));
+			}
+		}
+		else{
+			if(smallestY>100){
+				ctx.translate(0,(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,-(50 - smallestY));
+			}
+			if(smallestX>150){
+				ctx.translate((smallestX - 150),0);
+			}
+			else{
+				ctx.translate(-(150 - smallestX),0);
+			}
+		}
 	}
-	else if(smallestLength == drawingSideB){
-		var height = parseFloat(startY) - (parseFloat(startY) - parseFloat(drawingSideA));
-		var width = 150 + parseFloat(startX) - (parseFloat(startX) - parseFloat(drawingSideB));
-		if(height<200) ctx.translate(width/2, -height/2);
-		else if(height<350) ctx.translate(width/2, -height/4);
+	else if(smallestLength == drawingSideB){ //Side b is smallest side
+
+	/*Translating the screen to centre the triangle on the canvas
+	Translating is done by finding the total width and height of the triangle
+	after it is done being drawn. */ 
+		if(drawingAngleC > 90){
+			yCord1 = startY;
+			yCord2 = startY;
+			yCord3 = (((startY-drawingSideA) - startY) * Math.cos((drawingAngleC - 90) * Math.PI / 180) + startY);
+			smallestY = Math.min(yCord1,yCord2,yCord3);
+			if(smallestY>100){
+				ctx.translate(0,-(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,(50 - smallestY));
+			}
+		}
+		else{
+			if (drawingAngleC < 90){
+				yCord1 = startY;
+				yCord2 = startY;
+				yCord3 = (((startY-drawingSideA) - startY) * Math.cos( (360 - (drawingAngleC - 90)) * Math.PI / 180) + startY);
+				xCord1 = startX;
+				xCord2 = startX - drawingSideB;
+				xCord3 = (-((startY-drawingSideA) - startY) * Math.sin((360 - (drawingAngleC - 90)) * Math.PI / 180) + startX );
+			}
+			else{
+				yCord1 = startY;
+				yCord2 = startY;
+				yCord3 = startY - drawingSideA;
+				xCord1 = startX;
+				xCord2 = startX - drawingSideB;
+				xCord3 = startX;
+			}
+			smallestY = Math.min(yCord1,yCord2,yCord3);
+			smallestX = Math.min(xCord1,xCord2,xCord3);
+			if(smallestY>100){
+				ctx.translate(0,-(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,(50 - smallestY));
+			}
+			if(smallestX>150){
+				ctx.translate(-(smallestX - 150),0);
+			}
+			else{
+				ctx.translate((150 - smallestX),0);
+			}
+		}
+	//Drawing the triangle
 		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
@@ -108,13 +339,78 @@ function drawTriangle(ctx, canvas){
 		ctx.closePath();
 		ctx.stroke();
 		ctx.translate(-startX, -startY);
-		ctx.translate(-width/2, height/2);
+		if(drawingAngleC > 90){
+			if(smallestY>100){
+				ctx.translate(0,(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,-(50 - smallestY));
+			}
+		}
+		else{
+			if(smallestY>100){
+				ctx.translate(0,(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,-(50 - smallestY));
+			}
+			if(smallestX>150){
+				ctx.translate((smallestX - 150),0);
+			}
+			else{
+				ctx.translate(-(150 - smallestX),0);
+			}
+		}
 	}
 	else{ 
-		var height = parseFloat(startY) - (parseFloat(startY) - parseFloat(drawingSideB));
-		var width = 150 + parseFloat(startX) - (parseFloat(startX) - parseFloat(drawingSideC));
-		if(height<200) ctx.translate(width/2, -height/2);
-		else if(height<250) ctx.translate(width/2, -height/4);
+	/*Translating the screen to centre the triangle on the canvas
+	Translating is done by finding the total width and height of the triangle
+	after it is done being drawn. */
+		if(drawingAngleA > 90){
+			yCord1 = startY;
+			yCord2 = startY;
+			yCord3 = (((startY-drawingSideB) - startY) * Math.cos((drawingAngleA - 90) * Math.PI / 180) + startY);
+			smallestY = Math.min(yCord1,yCord2,yCord3);
+			if(smallestY>100){
+				ctx.translate(0,-(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,(50 - smallestY));
+			}
+		}
+		else{
+			if (drawingAngleA < 90){
+				yCord1 = startY;
+				yCord2 = startY;
+				yCord3 = (((startY-drawingSideB) - startY) * Math.cos( (360 - (drawingAngleA - 90)) * Math.PI / 180) + startY);
+				xCord1 = startX;
+				xCord2 = startX - drawingSideC;
+				xCord3 = (-((startY-drawingSideB) - startY) * Math.sin((360 - (drawingAngleA - 90)) * Math.PI / 180) + startX );
+			}
+			else{
+				yCord1 = startY;
+				yCord2 = startY;
+				yCord3 = startY - drawingSideB;
+				xCord1 = startX;
+				xCord2 = startX - drawingSideC;
+				xCord3 = startX;
+			}
+			smallestY = Math.min(yCord1,yCord2,yCord3);
+			smallestX = Math.min(xCord1,xCord2,xCord3);
+			if(smallestY>100){
+				ctx.translate(0,-(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,(50 - smallestY));
+			}
+			if(smallestX>150){
+				ctx.translate(-(smallestX - 150),0);
+			}
+			else{
+				ctx.translate((150 - smallestX),0);
+			}
+		}
+	//Drawing the triangle
 		ctx.strokeStyle = "black";
 		ctx.beginPath();
 		ctx.moveTo(startX, startY);
@@ -126,7 +422,7 @@ function drawTriangle(ctx, canvas){
 			ctx.lineTo(0, -drawingSideB);
 			ctx.rotate((360 - (drawingAngleA - 90)) * Math.PI / 180 * -1);
 		}
-		else if(drawingAngleC < 90){
+		else if(drawingAngleA < 90){
 			ctx.rotate((90-drawingAngleA) * Math.PI / 180);
 			ctx.lineTo(0, -drawingSideB);
 			ctx.rotate((90-drawingAngleA) * Math.PI / 180 * -1);
@@ -137,17 +433,38 @@ function drawTriangle(ctx, canvas){
 		ctx.closePath();
 		ctx.stroke();
 		ctx.translate(-startX, -startY);
-		ctx.translate(-width/2, height/2);
+		if(drawingAngleA > 90){
+			if(smallestY>100){
+				ctx.translate(0,(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,-(50 - smallestY));
+			}
+		}
+		else{
+			if(smallestY>100){
+				ctx.translate(0,(smallestY - 100));
+			}
+			else{
+				ctx.translate(0,-(50 - smallestY));
+			}
+			if(smallestX>150){
+				ctx.translate((smallestX - 150),0);
+			}
+			else{
+				ctx.translate(-(150 - smallestX),0);
+			}
+		}
 	}
-	console.log(width + "," + height);
 }
-//Two solution question doesnt work
 var digitCounter = 0;
 var twoSolutions = false;
 var showSolution1 = true;
 
+
+//Solving the triangle
 function solve(){
-	document.getElementById('answers').style.visibility = 'visible';
+	//Reading all the given information 
 	var sideA = document.getElementById('sideA').value;
 	var sideB = document.getElementById('sideB').value;
 	var sideC = document.getElementById('sideC').value;
@@ -200,13 +517,15 @@ function solve(){
 	var finalAngleB = 0;
 	var finalAngleC = 0;
 
+	//Checking if certain side or angles are already entered by the user
 	if(sideA != "") {numOfSides++; boolSideA = true; finalSideA = sideA; sideA = parseFloat(sideA);}
 	if(sideB != "") {numOfSides++; boolSideB = true; finalSideB = sideB; sideB = parseFloat(sideB);}
 	if(sideC != "") {numOfSides++; boolSideC = true; finalSideC = sideC; sideC = parseFloat(sideC);}
 	if(angleA != "") {numOfAngles++; boolAngleA = true; finalAngleA = angleA; angleA = parseFloat(angleA);}
 	if(angleB != "") {numOfAngles++; boolAngleB = true; finalAngleB = angleB; angleB = parseFloat(angleB);}
 	if(angleC != "") {numOfAngles++; boolAngleC = true; finalAngleC = angleC; angleC = parseFloat(angleC);}
-	//Case where all three sides are unknown and all angles are known
+	
+	//Error trapping (Not enough information given/Too much information given)
 	if((numOfAngles + numOfSides) < 3) { //Triangle is impossible
     	alert("Infinite Possibilities. Not enough information is given.");
     }
@@ -216,8 +535,18 @@ function solve(){
     else if(numOfAngles + numOfSides > 3){
     	alert("Only 3 sides/angles must be specified.")
     }
+
+
     else{ //Triangle is possible
-		if(numOfSides == 3){
+    	/*
+    	How triangles are solved: At first, the method checks how many angle lengths are given. If
+    	no angles are known, then all side lengths are specified and angle can be found using cosine
+    	law. If 1 angle is given, the triangle may have 2 solutions. The method checks which two side
+    	lengths are given, and find all missing side and angle lengths using sine and cosine law. Lastly, 
+    	if two angles are given, the third may be found using trigonometric laws, and all side lengths
+    	may be found using sine OR cosine law. 
+    	*/
+		if(numOfSides == 3){ //All 3 side lengths are given
             let temp = (Math.pow(sideB, 2) + Math.pow(sideC, 2) - Math.pow(sideA, 2)) / (2.0 * sideB * sideC);
             angleA = Math.acos(temp) * 180.0/Math.PI;
             temp = (Math.pow(sideA, 2) + Math.pow(sideC, 2) - Math.pow(sideB, 2)) / (2.0 * sideA * sideC);
@@ -225,8 +554,11 @@ function solve(){
             temp = (Math.pow(sideB, 2) + Math.pow(sideA, 2) - Math.pow(sideC, 2)) / (2.0 * sideB * sideA);
             angleC = Math.acos(temp) * 180.0/Math.PI;
     	}
+
 	    else if(numOfAngles == 1){ //Only 1 angle is given
+
 	    	if(boolAngleA){ //Angle A is the angle given
+
 				if(!boolSideA){ //Side A is missing
 					sideA = Math.sqrt(Math.pow(sideB,2) + Math.pow(sideC,2) - 2 * sideB * sideC * Math.cos(angleA*Math.PI/180.0) );
 					let temp = (Math.pow(sideA, 2) + Math.pow(sideC, 2) - Math.pow(sideB, 2)) / (2.0 * sideA * sideC);
@@ -244,7 +576,7 @@ function solve(){
 						angleB2 = 180 - angleA2 - angleC2;
 						sideB2 = sideB2 * Math.sin(angleB2 * Math.PI / 180.0) / Math.sin(angleA2 * Math.PI / 180.0);
 					}
-					else{
+					else{ //Triangle has 1 solution
 						twoSolutions = false;
 						angleC = Math.asin((sideC*Math.sin(angleA * Math.PI / 180.0)) / sideA) / (Math.PI / 180);
 						angleB = 180 - angleA - angleC;
@@ -261,7 +593,7 @@ function solve(){
 						angleC2 = 180 - angleA2 - angleB2;
 						sideC2 = sideA2 * Math.sin(angleC2 * Math.PI / 180.0) / Math.sin(angleA2 * Math.PI / 180.0);
 					}
-					else{
+					else{ //triangle has 1 solution
 						twoSolutions = false;
 						angleB = Math.asin((sideB*Math.sin(angleA * Math.PI / 180.0)) / sideA) / (Math.PI / 180);
 						angleC = 180 - angleB - angleA;
@@ -367,6 +699,7 @@ function solve(){
 				angleA = 180 - angleC - angleB;
 			}
     	}
+    	//Converting all answers to floats
 		sideA = parseFloat(sideA);
 		sideB = parseFloat(sideB);
 		sideC = parseFloat(sideC);
@@ -380,6 +713,8 @@ function solve(){
 		angleA2 = parseFloat(angleA2);
 		angleB2 = parseFloat(angleB2);
 		angleC2 = parseFloat(angleC2);
+
+		//If the side/angle meassurment was specified by the user, it is updated to its original value. 
     	if(boolSideA) {
     		sideA = parseFloat(finalSideA); 
     		sideA2 = parseFloat(finalSideA);
@@ -404,6 +739,7 @@ function solve(){
 	    	angleC = parseFloat(finalAngleC); 
 	    	angleC2 = parseFloat(finalAngleC);
 	    }
+
 	    //Checking if triangles are possible
 	    if(twoSolutions){
 	    	if(isNaN(sideA) || isNaN(sideB) || isNaN(sideC) || isNaN(sideA2) || isNaN(sideB2) || isNaN(sideC2)) possibleTriangle = false; 
@@ -418,7 +754,18 @@ function solve(){
 		if((sideA >= (sideB+sideC)) || (sideB>=(sideA+sideC)) || (sideC>=(sideA+sideB)) || !possibleTriangle){
 	    	alert("Triangle is not possible. A triangle cannot be made with the given requirements.");
 		}
-		else{
+		else{ //Output
+
+			document.getElementById('answers').style.visibility = 'visible';
+			trigIsSolved = true;
+			document.getElementById("sideA").readOnly = true;
+			document.getElementById("sideB").readOnly = true;
+			document.getElementById("sideC").readOnly = true;
+			document.getElementById("angleA").readOnly = true;
+			document.getElementById("angleB").readOnly = true;
+			document.getElementById("angleC").readOnly = true;
+
+			//Calculating other meassurements
 			perimeter = sideA + sideB + sideC;
 			perimeter2 = sideA2 + sideB2 + sideC2;
 		    
@@ -461,6 +808,7 @@ function solve(){
 	 			drawingAngleB = angleB2;
 				drawingAngleC = angleC2;
 	    	}
+	    	//Rounding all answers to match user's desired number of decimals. 
 			sideA = Math.round(parseFloat(sideA) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    sideB = Math.round(parseFloat(sideB) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    sideC = Math.round(parseFloat(sideC) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
@@ -494,6 +842,8 @@ function solve(){
 		    medianA2 = Math.round(parseFloat(medianA2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    medianB2 = Math.round(parseFloat(medianB2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
 		    medianC2 = Math.round(parseFloat(medianC2) * Math.pow(10,digitCounter)) / Math.pow(10,digitCounter);
+		    
+		    //Outputting all answers
 		    if((twoSolutions && showSolution1) || !twoSolutions){
 		    	printOne("sideAAnswer",sideA);
 		    	printOne("sideBAnswer",sideB);
@@ -538,6 +888,8 @@ function solve(){
 		}
 	}
 }
+
+//Printing/Ouput function
 function printOne(name, thing){
 	thing = thing.toString();
 	if(thing % 1 == 0){
@@ -551,32 +903,11 @@ function printOne(name, thing){
 	}
 	document.getElementById(name).value = thing;
 }
-function printTwo(name, thing1, thing2){
-	thing1 = thing1.toString();
-	thing2 = thing2.toString();
-	if(thing1 % 1 == 0){
-		thing1 += ".";
-		thing1 += "0".repeat(digitCounter);
-	}
-	else{
-		let startOfDecimal = thing1.indexOf(".") + 1;
-		let numOfDecimals = thing1.substring(startOfDecimal).length;
-		if(numOfDecimals < digitCounter) thing1 += "0".repeat(digitCounter-numOfDecimals);
-	}
-	if(thing2 % 1 == 0){
-		thing2 += ".";
-		thing2 += "0".repeat(digitCounter);
-	}
-	else{
-		let startOfDecimal = thing2.indexOf(".") + 1;
-		let numOfDecimals = thing2.substring(startOfDecimal).length;
-		if(numOfDecimals < digitCounter) thing1 += "0".repeat(digitCounter-numOfDecimals);
-	}
-	document.getElementById(name).value = thing1 + " OR " + thing2;
-}
+
+//Clearing all fields when the clear button is cliked
 function clearField(){
-	myContext.fillStyle = "yellow";
-	myContext.fillRect(0,0,myCanvas.width,myCanvas.height);
+	myContext.fillStyle = "white";
+	myContext.fillRect(-150,-150,1000,1000);
 	document.getElementById('answers').style.visibility = 'hidden';
 	if(document.getElementById('sideA').value != "") document.getElementById('sideA').value = "";
 	if(document.getElementById('sideB').value != "") document.getElementById('sideB').value = "";
@@ -603,25 +934,35 @@ function clearField(){
 	if(document.getElementById('areaAnswer').value != "") document.getElementById('areaAnswer').value = "";
 	if(document.getElementById('perimAnswer').value != "") document.getElementById('perimAnswer').value = "";
 	
+
+	document.getElementById("sideA").readOnly = false;
+	document.getElementById("sideB").readOnly = false;
+	document.getElementById("sideC").readOnly = false;
+	document.getElementById("angleA").readOnly = false;
+	document.getElementById("angleB").readOnly = false;
+	document.getElementById("angleC").readOnly = false;
+
 	digitCounter = 0;
 	twoSolutions = false;
 	showSolution1 = true;
+	trigIsSolved = false;
+	drawBasicTrig();
 }
+//Adding a decimal point
 function addDigit(){
 	digitCounter = parseFloat(digitCounter) + 1;
 	solve();
 }
+//Removing a decimal point
 function removeDigit(){
 	digitCounter = parseFloat(digitCounter) - 1;
 	solve();
 }
+//Switching between 2 solutions when possible
 function secondSolution(){
 	if(showSolution1) showSolution1 = false;
 	else showSolution1 = true;
 	if(twoSolutions){
 		solve();
-	}
-	else{
-		alert("There is no second solution.");
 	}
 }

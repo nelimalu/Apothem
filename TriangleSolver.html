@@ -108,30 +108,29 @@
 		<div>
 			<div class="inputField">
 				<z class = "inputText">Side a:</z>
-				<input class="sides" onclick="highlightSideA()" type="number" id="sideA">
+				<input class="sides box" onclick="highlightSideA()" type="number" id="sideA">
 				<z class = "inputText">Angle A:</z>
-				<input class="angles" onclick="highlightAngleA()" type="number" id="angleA">
+				<input class="angles box" onclick="highlightAngleA()" type="number" id="angleA">
 			</div>
 			<div class="inputField">
 				<z class = "inputText">Side b:</z>
-				<input class="sides" onclick="highlightSideB()" type="number" id="sideB">
+				<input class="sides box" onclick="highlightSideB()" type="number" id="sideB">
 				<z class = "inputText">Angle B:</z>
-				<input class="angles" onclick="highlightAngleB()" type="number" id="angleB">
+				<input class="angles box" onclick="highlightAngleB()" type="number" id="angleB">
 			</div>
 			<div class="inputField">
 				<z class = "inputText">Side c:</z>
-				<input class="sides" onclick="highlightSideC()" type="number" id="sideC">
+				<input class="sides box" onclick="highlightSideC()" type="number" id="sideC">
 				<z class = "inputText">Angle C:</z>
-				<input class="angles" onclick="highlightAngleC()" type="number" id="angleC">
+				<input class="angles box" onclick="highlightAngleC()" type="number" id="angleC">
 			</div>
 			<div class="inputField">
-				<button class="buttonSolve" onclick= "solve()" style="margin-left: 16.3%">Solve</button>
+				<button id="solveButton" class="buttonSolve" onclick= "solve()" style="margin-left: 16.3%">Solve</button>
 				<button class="buttonSolve" onclick= "clearField()" style="margin-left: 18.5%">Clear</button>
 			</div>
 		</div>
 		<div>
 			<canvas id="canvasId" width="550" height="350" style="border: 2px solid black;"></canvas>
-			<img id="trianglePic" src="triangle.png" style="display: none;">
 		</div>
 	</div>
 	<script src="js/trianglesolver.js"></script>
