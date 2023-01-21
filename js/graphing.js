@@ -3,19 +3,23 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
-let equation = "y = 2sin(10)";
-let x = nerdamer.solve(equation, 'y');
-console.log(nerdamer.solve(equation, 'y').toString());
-
 var mouse = {
 	pressed: false,
 	x: 0,
 	y: 0,
 }
 
-const SCROLL_SPEED = 6;
-const ZOOM_CAP = 60;
+const SCROLL_SPEED = 3;
+const MIN_ZOOM_CAP = -50;
+const MAX_ZOOM_CAP = 100;
 const NUMBER_FONT_SIZE = 20;
+const LINE_COLOURS = [
+	"#c74440",
+	"#2d70b3",
+	"#388c46",
+	"#6042a6",
+	"#000000"
+];
 
 
 function drawLine(x1, y1, x2, y2, colour) {
@@ -49,6 +53,8 @@ class Graph {
 		this.scalePixels = 100;
 		this.min_x = 0;
 		this.max_x = 0;
+		this.min_y = 0;
+		this.max_y = 0;
 	}
 
 	getXAxisY() {
@@ -74,7 +80,7 @@ class Graph {
 				drawText(i, this.getXAxisY() - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
-		this.max_x = counter * (this.scaleInterval + 1);
+		this.max_x = counter * (this.scaleInterval);
 
 		counter = 0;
 		for (let i = this.getYAxisX(); i >= 0; i -= this.scalePixels) {
@@ -83,7 +89,7 @@ class Graph {
 				drawText(i, this.getXAxisY() - 5, (counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
-		this.min_x = counter * (this.scaleInterval + 1);
+		this.min_x = counter * (this.scaleInterval);
 	}
 
 	drawYIntervals() {
@@ -93,6 +99,7 @@ class Graph {
 			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter++;
 		}
+		this.max_y = counter * this.scaleInterval;
 
 		counter = 0;
 		for (let i = this.getXAxisY(); i >= 0; i -= this.scalePixels) {
@@ -100,10 +107,10 @@ class Graph {
 			drawText(this.getYAxisX() + 12, i - 5, -(counter * this.scaleInterval).toString(), "black", NUMBER_FONT_SIZE);
 			counter--;
 		}
+		this.min_y = counter * this.scaleInterval;
 	}
 
 	drawIntervals() {
-		// X AXIS
 		this.drawXIntervals();
 		this.drawYIntervals();
 	}
@@ -118,8 +125,12 @@ class Graph {
 		this.scalePixels = this.zoomLevel + 100;
 		
 		// if user zooms to far, resize the scale to fit zoom level
-		if (this.zoomLevel > ZOOM_CAP || this.zoomLevel < -ZOOM_CAP / 2) {
-			this.scaleInterval *= this.zoomLevel < 0 ? 2 : 0.5;
+		if (this.zoomLevel > MAX_ZOOM_CAP) {
+			this.scaleInterval *= 0.5;
+			this.zoomLevel = 0;
+		}
+		if (this.zoomLevel < MIN_ZOOM_CAP) {
+			this.scaleInterval *= 2;
 			this.zoomLevel = 0;
 		}
 
@@ -128,26 +139,73 @@ class Graph {
 
 	drawLines() {
 		[...document.querySelectorAll('.equation')].forEach((element, j) => {
-			let equation = element.value;
-
 			c.beginPath();
 			c.lineWidth = 3;
-			let counter = 0;
-			for (let i = this.min_x; i < this.max_x; i += (this.max_x - this.min_x) / 200) {
-				let y = [1];//eval(nerdamer.solve(element.value.replace('x', `(${i})`), 'y').evaluate().toString());
+			c.strokeStyle = LINE_COLOURS[j % LINE_COLOURS.length];
+			try {
+				var equation = nerdamer(element.value).solveFor('y').toString();
+
+				try {
+					let new_equation = element.value.replaceAll('x', '(0)');
+					var y_intercept = -eval(nerdamer(nerdamer(new_equation).solveFor('y')).evaluate().toString());
+				} catch (e) {
+					var y_intercept = null;
+				}
+
+				try {
+					let new_equation = element.value.replaceAll('y', '(0)');
+					var x_intercept = eval(nerdamer(nerdamer(new_equation).solveFor('x')).evaluate().toString());
+				} catch (e) {
+					var x_intercept = null;
+				}
+
+				console.log(x_intercept, y_intercept)
 				
-				let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
-				let draw_y = this.getXAxisY() - (y[0] * this.scalePixels / this.scaleInterval)
+				let counter = 0;
+				let ended_line = false;
+				let prev_y = 0;
 
-				if (counter == 0)
-					c.moveTo(draw_x, draw_y);
-				else
-					c.lineTo(draw_x, draw_y);
+				for (let i = this.min_x; i < this.max_x; i += (this.max_x - this.min_x) / 150) {
+					let new_equation = equation.replaceAll('x', `(${i})`);
+					let y = eval(nerdamer(new_equation).evaluate().toString());
 
-				counter++;
+					
+					if (y < this.max_y * 2 && y > this.min_y * 2) {
+						let draw_x = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
+						let draw_y = this.getXAxisY() - (y * this.scalePixels / this.scaleInterval);
+						
+						if (counter == 0)
+							c.moveTo(draw_x, draw_y);
+						else {
+							if (Math.abs(prev_y - y) > Math.abs(this.max_y - this.min_y) / 2) {
+								if (prev_y < y)
+									c.lineTo(draw_x, 0);
+								else
+									c.lineTo(draw_x, canvas.height);
+								c.moveTo(draw_x, draw_y);
+							} else
+								c.lineTo(draw_x, draw_y);
+						}
+					}
+					prev_y = y;
+					counter++;
+				}
+
+				c.stroke();
+
+				// draw x intercept
+				
+			} catch (e) {}
+
+			//console.log(x_intercept, y_intercept)
+			if (x_intercept !== null) {
+				let draw_loc = this.getYAxisX() + (x_intercept * (this.scalePixels / this.scaleInterval));
+				drawCircle(draw_loc, this.getXAxisY(), 5, "#8d9fa9");
 			}
-
-			c.stroke();
+			if (y_intercept !== null) {
+				let draw_loc = this.getXAxisY() + (y_intercept * (this.scalePixels / this.scaleInterval));
+				drawCircle(this.getYAxisX(), draw_loc, 5, "#8d9fa9");
+			}
 		});
 	}
 }
@@ -193,7 +251,7 @@ document.addEventListener('keydown', function (e) {
 });
 
 canvas.addEventListener('mousewheel', function(event) {
-    graph.zoomLevel += event.deltaY < 0 ? SCROLL_SPEED : -SCROLL_SPEED;  // positive zoom in, negative zoom out
+    graph.zoomLevel += event.deltaY < 0 ? SCROLL_SPEED * 1.5 : -SCROLL_SPEED;  // positive zoom in, negative zoom out
 }, false);
 
 var graph = new Graph();
