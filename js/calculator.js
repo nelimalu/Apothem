@@ -37,13 +37,13 @@ function equal() {
 }
 function solveFor(variable){
 	if(variable == 'X'){
-		answer.value = "X = " + nerdamer(x).simplify().toString();
+		answer.value = "X = " + x;
 	}
 	else if(variable == 'Y'){
-		answer.value = "Y = " + nerdamer(y).simplify().toString();
+		answer.value = "Y = " + y;
 	}
 	else{
-		answer.value = "Z = " + nerdamer(z).simplify().toString();
+		answer.value = "Z = " + z;
 	}
 }
 function evaluate(str){
@@ -75,7 +75,7 @@ function evaluate(str){
 		if(str.includes('=')) document.getElementById("zButton").style.visibility = "visible";
 		z = z.replaceAll("sqrt","√");
 		z = z.replaceAll("pi","π")
-		answer.value = "Z = " + y;
+		answer.value = "Z = " + z;
 	}
 	if(!str.includes('=')){
 		finalAnswer = nerdamer(str).simplify().toString();

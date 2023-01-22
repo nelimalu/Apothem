@@ -1,3 +1,15 @@
+/*
+Name: Luka Jovanovic, Pouya Karimi
+Date: January 20th, 2022
+Teacher: Mr. Gugoiu
+Description: This program is a mathematics website, designed to help Grade 10 math students
+and teachers. The website is made up of 4 different parts:
+    A: Graphing Calculator
+    B: Photo Math Solver
+    C: Algebra Calculator
+    D: Triangle Solver
+Each part can be accessed from the home page, as well as all other tabs. 
+*/
 var interval = window.setInterval(siteLoop, 1);
 
 function TxtType(element, toRotate, period) {
