@@ -13,6 +13,13 @@ const SCROLL_SPEED = 3;
 const MIN_ZOOM_CAP = -50;
 const MAX_ZOOM_CAP = 100;
 const NUMBER_FONT_SIZE = 20;
+const LINE_COLOURS = [
+	"#c74440",
+	"#2d70b3",
+	"#388c46",
+	"#6042a6",
+	"#000000"
+];
 
 
 function drawLine(x1, y1, x2, y2, colour) {
@@ -104,7 +111,6 @@ class Graph {
 	}
 
 	drawIntervals() {
-		// X AXIS
 		this.drawXIntervals();
 		this.drawYIntervals();
 	}
@@ -135,9 +141,25 @@ class Graph {
 		[...document.querySelectorAll('.equation')].forEach((element, j) => {
 			c.beginPath();
 			c.lineWidth = 3;
-			
+			c.strokeStyle = LINE_COLOURS[j % LINE_COLOURS.length];
 			try {
 				var equation = nerdamer(element.value).solveFor('y').toString();
+
+				try {
+					let new_equation = element.value.replaceAll('x', '(0)');
+					var y_intercept = -eval(nerdamer(nerdamer(new_equation).solveFor('y')).evaluate().toString());
+				} catch (e) {
+					var y_intercept = null;
+				}
+
+				try {
+					let new_equation = element.value.replaceAll('y', '(0)');
+					var x_intercept = eval(nerdamer(nerdamer(new_equation).solveFor('x')).evaluate().toString());
+				} catch (e) {
+					var x_intercept = null;
+				}
+
+				console.log(x_intercept, y_intercept)
 				
 				let counter = 0;
 				let ended_line = false;
@@ -170,7 +192,20 @@ class Graph {
 				}
 
 				c.stroke();
+
+				// draw x intercept
+				
 			} catch (e) {}
+
+			//console.log(x_intercept, y_intercept)
+			if (x_intercept !== null) {
+				let draw_loc = this.getYAxisX() + (x_intercept * (this.scalePixels / this.scaleInterval));
+				drawCircle(draw_loc, this.getXAxisY(), 5, "#8d9fa9");
+			}
+			if (y_intercept !== null) {
+				let draw_loc = this.getXAxisY() + (y_intercept * (this.scalePixels / this.scaleInterval));
+				drawCircle(this.getYAxisX(), draw_loc, 5, "#8d9fa9");
+			}
 		});
 	}
 }
