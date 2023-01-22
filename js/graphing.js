@@ -7,6 +7,8 @@ var mouse = {
 	pressed: false,
 	x: 0,
 	y: 0,
+	real_x: 0,
+	real_y: 0,
 }
 
 const SCROLL_SPEED = 3;
@@ -41,6 +43,16 @@ function drawText(x, y, message, colour, size, font="monospace") {
 	c.font = size + "px " + font;
 	c.fillStyle = colour;
 	c.fillText(message, x - c.measureText(message).width / 2, y);
+}
+
+
+function distance(x1, y1, x2, y2) {
+	return Math.sqrt((x2 - x1) ** 2, (y2 - y1) ** 2);
+}
+
+
+function roundToDigits(number, digits) {
+  return Number(Math.round(Number(number + 'e' + digits)) + 'e-' + digits);
 }
 
 
@@ -154,12 +166,15 @@ class Graph {
 
 				try {
 					let new_equation = element.value.replaceAll('y', '(0)');
-					var x_intercept = eval(nerdamer(nerdamer(new_equation).solveFor('x')).evaluate().toString());
+					//var x_intercept = nerdamer(nerdamer(new_equation).solveFor('x')).evaluate().toString();
+					var x_intercept = nerdamer(new_equation).solveFor('x').toString().split(',').map(e => {
+						return eval(nerdamer(e).evaluate());
+					})
 				} catch (e) {
 					var x_intercept = null;
 				}
 
-				console.log(x_intercept, y_intercept)
+				// console.log(x_intercept, y_intercept)
 				
 				let counter = 0;
 				let ended_line = false;
@@ -197,14 +212,27 @@ class Graph {
 				
 			} catch (e) {}
 
-			//console.log(x_intercept, y_intercept)
-			if (x_intercept !== null) {
-				let draw_loc = this.getYAxisX() + (x_intercept * (this.scalePixels / this.scaleInterval));
-				drawCircle(draw_loc, this.getXAxisY(), 5, "#8d9fa9");
+			if (x_intercept != null) {
+				x_intercept.forEach((i, j) => {
+
+					let draw_loc = this.getYAxisX() + (i * (this.scalePixels / this.scaleInterval));
+					let dist = distance(mouse.real_x, mouse.real_y, draw_loc, this.getXAxisY());
+					if (dist <= 5)
+						drawText(mouse.real_x, mouse.real_y - 10, `${roundToDigits(eval(i), 3)}`, "black", 24);
+
+					drawCircle(draw_loc, this.getXAxisY(), 5, "#8d9fa9");
+				})
+				
 			}
-			if (y_intercept !== null) {
+			if (y_intercept != null) {
 				let draw_loc = this.getXAxisY() + (y_intercept * (this.scalePixels / this.scaleInterval));
 				drawCircle(this.getYAxisX(), draw_loc, 5, "#8d9fa9");
+
+				//console.log(mouse.real_x, mouse.real_y, draw_loc, this.getYAxisX())
+				let dist = distance(mouse.real_x, mouse.real_y, this.getYAxisX(), draw_loc);
+				console.log(dist);
+				if (dist <= 5)
+					drawText(mouse.real_x, mouse.real_y - 10, `${roundToDigits(eval(-y_intercept), 3)}`, "black", 24);
 			}
 		});
 	}
@@ -219,8 +247,13 @@ canvas.addEventListener('mouseup', (event) => {
 });
 
 canvas.addEventListener('mousemove', (event) => {
+	let rect = canvas.getBoundingClientRect();
 	mouse.x = event.x;
 	mouse.y = event.y;
+
+	mouse.real_x = event.x - rect.left;
+	mouse.real_y = event.y - rect.top;
+
 	if (mouse.pressed) {
 		graph.x_offset += event.movementX;
 		graph.y_offset += event.movementY;
