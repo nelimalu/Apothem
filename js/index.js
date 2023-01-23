@@ -58,7 +58,7 @@ function TxtType(element, toRotate, period) {
 
 window.onload = function() {
     // create typewriter
-    var element = document.getElementsById('typewriter');
+    var element = document.getElementById('typewriter');
     var toRotate = element.getAttribute('data-type');
     var period = element.getAttribute('data-period');
     if (toRotate)
