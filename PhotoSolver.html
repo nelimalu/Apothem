@@ -49,19 +49,21 @@
 		  </div>
 		</nav>
 
-		<div class="drop-area-container">
-			<div class="drop-area">
-				<input class="file-input" type="file" id="file-zone" accept="image/jpg image/png" onchange="handleImage(this.files[0])">
-				<img class="drop-image" src="assets/images/upload.png">
-				
-				<br>
-				<div>
-					
-					<span class="fake-btn">Choose files</span>
-					<span class="file-msg">or drag and drop files here</span>
-				</div>
+		
+
+		<div class="drop-area">
+			<img class="drop-image" src="assets/images/upload.png">
+			<div class="description">
+				CLICK TO ADD AN IMAGE (JPEG ONLY)
+			</div>
+			<img id="problem-image">
+			<div id="solution" class="description large-text">
+				Solution: <br><strong>Enter a file</strong>
 			</div>
 		</div>
+
+		<!-- FILE INPUT -->
+		<input class="file-input" type="file" id="file-zone" accept="image/jpg" onchange="handleImage(this, this.files[0])">
 
 	</body>
 </html>

@@ -3,6 +3,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 var c = canvas.getContext("2d");
 
+// gradient to make text pop
 var gradient = c.createLinearGradient(0, 0, window.innerWidth, window.innerHeight);
 gradient.addColorStop(0, "#f0f0f0");
 gradient.addColorStop(0.5, "#ffffff");
@@ -47,10 +48,13 @@ class Ball {
         c.fillStyle = '#000000';
         c.fill();
 
+        // loop through every other ball
         for (let ball of orbs) {
             let dist = distance(ball.x, ball.y, this.x, this.y);
+
+            // if they are close, draw a line
             if (dist < 200) {
-                let opacity = squish(dist, 200, 0, 0, 1);
+                let opacity = squish(dist, 200, 0, 0, 1);  // make line fade based on distance
                 c.beginPath();
                 c.moveTo(ball.x, ball.y);
                 c.lineTo(this.x, this.y);
@@ -61,6 +65,7 @@ class Ball {
     }
 
     update() {
+        // move each individual ball
         this.x += this.x_vel;
         this.y += this.y_vel;
 
@@ -75,6 +80,8 @@ class Ball {
 
 function generateBalls() {
     let balls = [];
+
+    // give each ball a random position and velocity
     for (let i = 0; i < 75; i++) {
         let x = randint(0, canvas.width);
         let y = randint(0, canvas.height);
@@ -87,17 +94,19 @@ function generateBalls() {
 }
 
 
+// create orbs
 var orbs = generateBalls();
 function animate() {
     window.requestAnimationFrame(animate);
     c.fillStyle = "#ffffff";
     c.fillRect(0, 0, canvas.width, canvas.height);
 
+    // draw each orb and move them
     for (let orb of orbs) {
         orb.draw();
         orb.update();
     }
-
+    
     c.fillStyle = gradient;
     c.fillRect(0, 0, canvas.width, canvas.height);
 }
